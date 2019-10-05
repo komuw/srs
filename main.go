@@ -16,6 +16,7 @@ run as:
     go run .
 */
 func main() {
+	// TODO: accept a directory and loop through all the markdown files in that directory
 	filepath := "/home/komuw/mystuff/srs/pol.md"
 	md, err := ioutil.ReadFile(filepath)
 	if err != nil {
@@ -46,17 +47,12 @@ func main() {
 		Algorithm: NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
-		var crd Card
-
-		err = json.Unmarshal(cardAttribute, &crd)
+		err = json.Unmarshal(cardAttribute, &card)
 		if err != nil {
 			log.Fatalf("error: %+v", err)
 		}
-
 		fmt.Println("card from file")
-		litter.Dump(crd)
-
-		card = crd
+		litter.Dump(card)
 	}
 
 	fmt.Println("NextReviewAt() 1: ", card.Algorithm.NextReviewAt())
