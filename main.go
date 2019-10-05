@@ -73,10 +73,15 @@ func main() {
 	err = setExtendedAttrs(filepath, algoJson)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
-
 	}
 
 	fmt.Println("card when saving")
 	litter.Dump(card)
+
+	err = card.Display()
+	if err != nil {
+		log.Fatalf("error: %+v", err)
+
+	}
 
 }

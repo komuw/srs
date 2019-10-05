@@ -2,6 +2,8 @@ package main
 
 import (
 	"encoding/json"
+	"os"
+	"os/exec"
 	"time"
 
 	"github.com/gomarkdown/markdown/ast"
@@ -46,6 +48,17 @@ func (c *Card) UnmarshalJSON(b []byte) error {
 	myAlg.LastReviewedAt = ReviewedAt
 
 	c.Algorithm = myAlg
+	return nil
+}
+
+func (c Card) Display() error {
+	cmd := exec.Command("bat", "-p", c.FilePath)
+	cmd.Stdout = os.Stdout
+	cmd.Stderr = os.Stderr
+	err := cmd.Run()
+	if err != nil {
+		return errors.Wrapf(err, "unable to open %v for reading", c.FilePath)
+	}
 	return nil
 }
 
