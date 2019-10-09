@@ -17,6 +17,16 @@ import (
 // has to start with "user."
 const attrName = "user.algo"
 
+// Deck represents a collection of the cards to review.
+type Deck struct {
+	Cards []Card
+}
+
+// NewDeck creates a new pack of Cards
+func NewDeck() *Deck {
+	return &Deck{}
+}
+
 // Card represents a single card in a Deck.
 type Card struct {
 	Version   uint32

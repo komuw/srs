@@ -2,8 +2,11 @@ package main
 
 import (
 	"bufio"
+	"flag"
 	"os"
+	"path/filepath"
 	"strconv"
+	"strings"
 
 	"fmt"
 	"log"
@@ -13,7 +16,7 @@ import (
 
 /*
 run as:
-    go run .
+    go run . -d myCards
 */
 
 func init() {
@@ -21,36 +24,86 @@ func init() {
 	AlgoRegistration()
 }
 
+func walkFnClosure(src string, deck *Deck) filepath.WalkFunc {
+	return func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			// todo: maybe we should return nil
+			return err
+		}
+
+		if info.Mode().IsDir() {
+			// return on
+			return nil
+		}
+		if !info.Mode().IsRegular() {
+			// return on non-regular files
+			return nil
+		}
+		if strings.ToLower(filepath.Ext(path)) != ".md" {
+			// non-markdown
+			// TODO: support other markdown extensions like .mkd
+			return nil
+		}
+
+		card, err := NewCard(path)
+		if err != nil {
+			return err
+		}
+		deck.Cards = append(deck.Cards, *card)
+
+		return nil
+	}
+}
 func main() {
-	// TODO: accept a directory and loop through all the markdown files in that directory
-	filepath := "/Users/komuw/mystuff/srs/pol.md"
-	card, err := NewCard(filepath)
+	var cardDir string
+	flag.StringVar(
+		&cardDir,
+		"d",
+		"",
+		"path to directory containing cards.")
+	flag.Parse()
+
+	fmt.Println("cardDir: ", cardDir)
+
+	cardDirAbs, err := filepath.Abs(cardDir)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
+	fmt.Println("cardDirAbs: ", cardDirAbs)
+	fmt.Println("\n\n")
 
-	fmt.Printf("\n\t %s \n\n", card.Question)
-	fmt.Print("Rate your answer between 1-10:")
-
-	uInput, err := getuserInput()
+	deck := NewDeck()
+	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck))
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
+	fmt.Println("deck")
+	// litter.Dump(deck)
 
-	// rate card
-	card.Rate(uInput)
+	for _, card := range deck.Cards {
+		fmt.Printf("\n\t %s \n\n", card.Question)
+		fmt.Print("Rate your answer between 1-10:")
 
-	// persist new metadata
-	err = card.Encode()
-	if err != nil {
-		log.Fatalf("error: %+v", err)
-	}
+		uInput, err := getuserInput()
+		if err != nil {
+			log.Fatalf("error: %+v", err)
+		}
 
-	// display the answer to the user
-	err = card.Display()
-	if err != nil {
-		log.Fatalf("error: %+v", err)
+		// rate card
+		card.Rate(uInput)
 
+		// persist new metadata
+		err = card.Encode()
+		if err != nil {
+			log.Fatalf("error: %+v", err)
+		}
+
+		// display the answer to the user
+		err = card.Display()
+		if err != nil {
+			log.Fatalf("error: %+v", err)
+
+		}
 	}
 
 }
