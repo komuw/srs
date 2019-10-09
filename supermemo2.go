@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-////////////////////////////////////////////// SUPERMEMO //////////////////////////////////////////////
 // Supermemo2 calculates review intervals using SM2 algorithm
 type Supermemo2 struct {
 	LastReviewedAt time.Time

@@ -17,7 +17,7 @@ run as:
 */
 func main() {
 	// TODO: accept a directory and loop through all the markdown files in that directory
-	filepath := "/home/komuw/mystuff/srs/pol.md"
+	filepath := "/Users/komuw/mystuff/srs/pol.md"
 	md, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
@@ -68,11 +68,11 @@ func main() {
 	// After the user has rated the card and we have updated the card struct with the new metadata
 	// We need to  persist that on the markdown files' extended attributes
 	// update the card attributes with new algo
-	algoJson, err := json.Marshal(card)
+	algoJSON, err := json.Marshal(card)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
-	err = setExtendedAttrs(filepath, algoJson)
+	err = setExtendedAttrs(filepath, algoJSON)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
