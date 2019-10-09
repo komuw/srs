@@ -107,21 +107,9 @@ func (c Card) Display() error {
 	return nil
 }
 
-func getQuestion(node ast.Node) (string, error) {
-	for _, child := range node.GetChildren() {
-		switch thisNode := child.(type) {
-		case *ast.Heading:
-			question := thisNode.HeadingID
-			return question, nil
-		default:
-			// unknown Node
-		}
-	}
-	return "", errors.New("The markdown file does not contain a question")
-}
-
-func setExtendedAttrs(filepath string, algoEncoded []byte) error {
-	err := xattr.Set(filepath, attrName, algoEncoded)
+// SetExtendedAttrs sets the files extra metadata
+func (c Card) SetExtendedAttrs(algoEncoded []byte) error {
+	err := xattr.Set(c.FilePath, attrName, algoEncoded)
 	if err != nil {
 		return errors.Wrapf(err, "unable to set extended file attributes")
 	}
@@ -134,4 +122,17 @@ func getExtendedAttrs(filepath string) ([]byte, error) {
 		return []byte(""), errors.Wrapf(err, "unable to get extended file attributes")
 	}
 	return attribute, nil
+}
+
+func getQuestion(node ast.Node) (string, error) {
+	for _, child := range node.GetChildren() {
+		switch thisNode := child.(type) {
+		case *ast.Heading:
+			question := thisNode.HeadingID
+			return question, nil
+		default:
+			// unknown Node
+		}
+	}
+	return "", errors.New("The markdown file does not contain a question")
 }

@@ -46,7 +46,7 @@ func main() {
 		log.Fatalf("error: %+v", err)
 	}
 
-	err = setExtendedAttrs(filepath, wr.Bytes())
+	err = card.SetExtendedAttrs(wr.Bytes())
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
