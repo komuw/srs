@@ -1,12 +1,14 @@
 package main
 
 import (
-	"bytes"
+	"bufio"
+	"os"
+	"strconv"
 
 	"fmt"
 	"log"
 
-	"github.com/sanity-io/litter"
+	"github.com/pkg/errors"
 )
 
 /*
@@ -27,38 +29,65 @@ func main() {
 		log.Fatalf("error: %+v", err)
 	}
 
-	fmt.Println("NextReviewAt() 1: ", card.Algorithm.NextReviewAt())
+	fmt.Printf("\n\t %s \n\n", card.Question)
+	fmt.Print("Rate your answer between 1-10:")
 
-	// TODO: this is where we rely on user input for them to rate this card
-	// then we call advance based on user input.
-	// Remember to validate the user input
-	// review and rate a card
-	sm := card.Algorithm.Advance(0.8)
-	card.Algorithm = sm
-	fmt.Println("NextReviewAt() 2: ", card.Algorithm.NextReviewAt())
-
-	// After the user has rated the card and we have updated the card struct with the new metadata
-	// We need to  persist that on the markdown files' extended attributes
-	// update the card attributes with new algo
-	var wr bytes.Buffer
-	err = card.Encode(&wr)
+	uInput, err := getuserInput()
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
 
-	err = card.SetExtendedAttrs(wr.Bytes())
+	// rate card
+	card.Rate(uInput)
+
+	// persist new metadata
+	err = card.Encode()
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
 
-	fmt.Println("card when saving")
-	litter.Dump(card)
-
-	// TODO: finally we display the answer to the user
+	// display the answer to the user
 	err = card.Display()
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 
 	}
 
+}
+
+func getuserInput() (float64, error) {
+	var userInput float64
+	var err error
+
+	scanner := bufio.NewScanner(os.Stdin)
+	for scanner.Scan() {
+		userInputStr := scanner.Text()
+		if len(userInputStr) > 0 {
+			fmt.Println("you entered: ", userInputStr)
+			uInputInt, err := strconv.Atoi(userInputStr)
+			if err != nil {
+				err = errors.New("user input should be between 1-10, try again")
+				log.Println(err)
+				continue
+			}
+			if uInputInt < 0 {
+				err = errors.New("user input should be between 1-10, try again")
+				log.Println(err)
+				continue
+			} else if uInputInt > 10 {
+				err = errors.New("user input should be between 1-10, try again")
+				log.Println(err)
+				continue
+			}
+
+			userInput = float64(uInputInt)
+			break
+		}
+	}
+	err = scanner.Err()
+	if err != nil {
+		return userInput, errors.Wrapf(err, "scanner error")
+	}
+
+	return userInput, nil
 }

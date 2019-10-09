@@ -3,7 +3,6 @@ package main
 import (
 	"bytes"
 	"encoding/gob"
-	"fmt"
 	"io"
 	"io/ioutil"
 	"os"
@@ -13,7 +12,6 @@ import (
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/pkg/errors"
 	"github.com/pkg/xattr"
-	"github.com/sanity-io/litter"
 )
 
 // has to start with "user."
@@ -46,8 +44,6 @@ func NewCard(filepath string) (*Card, error) {
 	if err != nil {
 		return nil, err
 	}
-	fmt.Println("cardAttribute:")
-	litter.Dump(string(cardAttribute))
 
 	card := &Card{
 		Version:   1,
@@ -63,8 +59,6 @@ func NewCard(filepath string) (*Card, error) {
 		if err != nil {
 			return nil, err
 		}
-		fmt.Println("card from file")
-		litter.Dump(newCard)
 		card = newCard
 	}
 	return card, nil
@@ -72,16 +66,24 @@ func NewCard(filepath string) (*Card, error) {
 }
 
 // Encode encodes the Card value into the encoder.
-func (c Card) Encode(w io.Writer) error {
+func (c Card) Encode() error {
 	// The Card.Algorithm concrete type(eg Supermemo2) has to be registered
 	// using gob.Register else this function will fail
 	// We registered it in main.
 
-	enc := gob.NewEncoder(w)
+	var w bytes.Buffer
+
+	enc := gob.NewEncoder(&w)
 	err := enc.Encode(&c)
 	if err != nil {
 		return errors.Wrapf(err, "unable to encode card %v", c)
 	}
+
+	err = c.setExtendedAttrs(w.Bytes())
+	if err != nil {
+		return err
+	}
+
 	return nil
 }
 
@@ -93,6 +95,12 @@ func (c Card) Decode(r io.Reader) (*Card, error) {
 		return nil, errors.Wrapf(err, "unable to decode card %v", c)
 	}
 	return &c, nil
+}
+
+// Rate a Card.
+func (c *Card) Rate(uInput float64) {
+	sm := c.Algorithm.Advance(uInput)
+	c.Algorithm = sm
 }
 
 // Display shows cards content to terminal
@@ -108,7 +116,7 @@ func (c Card) Display() error {
 }
 
 // SetExtendedAttrs sets the files extra metadata
-func (c Card) SetExtendedAttrs(algoEncoded []byte) error {
+func (c Card) setExtendedAttrs(algoEncoded []byte) error {
 	err := xattr.Set(c.FilePath, attrName, algoEncoded)
 	if err != nil {
 		return errors.Wrapf(err, "unable to set extended file attributes")
