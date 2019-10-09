@@ -40,13 +40,13 @@ func main() {
 	// After the user has rated the card and we have updated the card struct with the new metadata
 	// We need to  persist that on the markdown files' extended attributes
 	// update the card attributes with new algo
-	var network bytes.Buffer
-	err = card.Encode(&network)
+	var wr bytes.Buffer
+	err = card.Encode(&wr)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
 
-	err = setExtendedAttrs(filepath, network.Bytes())
+	err = setExtendedAttrs(filepath, wr.Bytes())
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
