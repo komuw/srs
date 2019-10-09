@@ -1,7 +1,7 @@
 package main
 
 import (
-	"encoding/json"
+	"bytes"
 
 	"fmt"
 	"io/ioutil"
@@ -15,7 +15,14 @@ import (
 run as:
     go run .
 */
+
+func init() {
+	// init funcs are bad
+	AlgoRegistration()
+}
+
 func main() {
+
 	// TODO: accept a directory and loop through all the markdown files in that directory
 	filepath := "/Users/komuw/mystuff/srs/pol.md"
 	md, err := ioutil.ReadFile(filepath)
@@ -47,12 +54,17 @@ func main() {
 		Algorithm: NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
-		err = json.Unmarshal(cardAttribute, &card)
+		// err = json.Unmarshal(cardAttribute, &card)
+
+		newCard, err := card.Decode(
+			bytes.NewReader(cardAttribute))
 		if err != nil {
 			log.Fatalf("error: %+v", err)
 		}
 		fmt.Println("card from file")
-		litter.Dump(card)
+		litter.Dump(newCard)
+
+		card = *newCard
 	}
 
 	fmt.Println("NextReviewAt() 1: ", card.Algorithm.NextReviewAt())
@@ -68,11 +80,14 @@ func main() {
 	// After the user has rated the card and we have updated the card struct with the new metadata
 	// We need to  persist that on the markdown files' extended attributes
 	// update the card attributes with new algo
-	algoJSON, err := json.Marshal(card)
+	// algoJSON, err := json.Marshal(card)
+	var network bytes.Buffer
+	err = card.Encode(&network)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
-	err = setExtendedAttrs(filepath, algoJSON)
+
+	err = setExtendedAttrs(filepath, network.Bytes())
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}

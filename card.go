@@ -1,10 +1,10 @@
 package main
 
 import (
-	"encoding/json"
+	"encoding/gob"
+	"io"
 	"os"
 	"os/exec"
-	"time"
 
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/pkg/errors"
@@ -22,35 +22,37 @@ type Card struct {
 	Algorithm SRSalgorithm
 }
 
-// UnmarshalJSON implements json.Unmarshaler for Supermemo2
-func (c *Card) UnmarshalJSON(b []byte) error {
-	var objMap map[string]interface{}
-	err := json.Unmarshal(b, &objMap)
+// Encode encodes the interface value into the encoder.
+func (c Card) Encode(w io.Writer) error {
+	// The encode will fail unless the concrete type has been
+	// registered. We registered it in the calling function.
+
+	// Pass pointer to interface so Encode sees (and hence sends) a value of
+	// interface type. If we passed p directly it would see the concrete type instead.
+	// See the blog post, "The Laws of Reflection" for background.
+
+	enc := gob.NewEncoder(w)
+	err := enc.Encode(&c)
 	if err != nil {
-		return errors.Wrapf(err, "unable to Unmarshal")
+		return errors.Wrapf(err, "unable to encode card %v", c)
 	}
-
-	c.Version = uint32(objMap["Version"].(float64))
-	c.Question = objMap["Question"].(string)
-	c.FilePath = objMap["FilePath"].(string)
-
-	var objMapAlgo = objMap["Algorithm"].(map[string]interface{})
-	myAlg := NewSupermemo2()
-	myAlg.Interval = objMapAlgo["Interval"].(float64)
-	myAlg.Easiness = objMapAlgo["Easiness"].(float64)
-	myAlg.Correct = int(objMapAlgo["Correct"].(float64))
-	myAlg.Total = int(objMapAlgo["Total"].(float64))
-	LastReviewedAtLayout := "2006-01-02T15:04:05Z07:00"
-	ReviewedAt, err := time.Parse(LastReviewedAtLayout, objMapAlgo["LastReviewedAt"].(string))
-	if err != nil {
-		return errors.Wrapf(err, "unable to Parse LastReviewedAt")
-	}
-	myAlg.LastReviewedAt = ReviewedAt
-
-	c.Algorithm = myAlg
 	return nil
 }
 
+// Decode decodes the next interface value from the stream and returns it.
+func (c Card) Decode(r io.Reader) (*Card, error) {
+	// The decode will fail unless the concrete type on the wire has been
+	// registered. We registered it in the calling function.
+
+	dec := gob.NewDecoder(r)
+	err := dec.Decode(&c)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unable to decode card %v", c)
+	}
+	return &c, nil
+}
+
+// Display shows cards content to terminal
 func (c Card) Display() error {
 	cmd := exec.Command("bat", "-p", c.FilePath)
 	cmd.Stdout = os.Stdout
@@ -75,8 +77,8 @@ func getQuestion(node ast.Node) (string, error) {
 	return "", errors.New("The markdown file does not contain a question")
 }
 
-func setExtendedAttrs(filepath string, algoJson []byte) error {
-	err := xattr.Set(filepath, attrName, algoJson)
+func setExtendedAttrs(filepath string, algoJSON []byte) error {
+	err := xattr.Set(filepath, attrName, algoJSON)
 	if err != nil {
 		return errors.Wrapf(err, "unable to set extended file attributes")
 	}

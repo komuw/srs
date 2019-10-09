@@ -7,4 +7,5 @@ require (
 	github.com/pkg/errors v0.8.1
 	github.com/pkg/xattr v0.4.1
 	github.com/sanity-io/litter v1.1.0
+	github.com/stretchr/testify v1.4.0 // indirect
 )
