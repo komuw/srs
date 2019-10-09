@@ -13,48 +13,20 @@ import (
 	"log"
 
 	"github.com/pkg/errors"
+
+	"github.com/komuw/srs"
 )
 
 /*
 run as:
-    go run . -d myCards
+    go run cmd/main.go -d myCards/
 */
 
 func init() {
 	// init funcs are bad
-	AlgoRegistration()
+	srs.AlgoRegistration()
 }
 
-func walkFnClosure(src string, deck *Deck) filepath.WalkFunc {
-	return func(path string, info os.FileInfo, err error) error {
-		if err != nil {
-			// todo: maybe we should return nil
-			return err
-		}
-
-		if info.Mode().IsDir() {
-			// return on
-			return nil
-		}
-		if !info.Mode().IsRegular() {
-			// return on non-regular files
-			return nil
-		}
-		if strings.ToLower(filepath.Ext(path)) != ".md" {
-			// non-markdown
-			// TODO: support other markdown extensions like .mkd
-			return nil
-		}
-
-		card, err := NewCard(path)
-		if err != nil {
-			return err
-		}
-		deck.Cards = append(deck.Cards, *card)
-
-		return nil
-	}
-}
 func main() {
 	var cardDir string
 	flag.StringVar(
@@ -68,7 +40,7 @@ func main() {
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
-	deck := NewDeck()
+	deck := srs.NewDeck()
 	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck))
 	if err != nil {
 		log.Fatalf("error: %+v", err)
@@ -105,6 +77,37 @@ func main() {
 		time.Sleep(3 * time.Second)
 	}
 
+}
+
+func walkFnClosure(src string, deck *srs.Deck) filepath.WalkFunc {
+	return func(path string, info os.FileInfo, err error) error {
+		if err != nil {
+			// todo: maybe we should return nil
+			return err
+		}
+
+		if info.Mode().IsDir() {
+			// return on
+			return nil
+		}
+		if !info.Mode().IsRegular() {
+			// return on non-regular files
+			return nil
+		}
+		if strings.ToLower(filepath.Ext(path)) != ".md" {
+			// non-markdown
+			// TODO: support other markdown extensions like .mkd
+			return nil
+		}
+
+		card, err := srs.NewCard(path)
+		if err != nil {
+			return err
+		}
+		deck.Cards = append(deck.Cards, *card)
+
+		return nil
+	}
 }
 
 func getuserInput() (float64, error) {
