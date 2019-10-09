@@ -1,14 +1,19 @@
 package main
 
 import (
+	"bytes"
 	"encoding/gob"
+	"fmt"
 	"io"
+	"io/ioutil"
 	"os"
 	"os/exec"
 
 	"github.com/gomarkdown/markdown/ast"
+	"github.com/gomarkdown/markdown/parser"
 	"github.com/pkg/errors"
 	"github.com/pkg/xattr"
+	"github.com/sanity-io/litter"
 )
 
 // has to start with "user."
@@ -20,6 +25,50 @@ type Card struct {
 	Question  string
 	FilePath  string
 	Algorithm SRSalgorithm
+}
+
+// NewCard returns a new Card
+func NewCard(filepath string) (*Card, error) {
+	md, err := ioutil.ReadFile(filepath)
+	if err != nil {
+		return nil, errors.Wrapf(err, "unable to read file %v", filepath)
+
+	}
+	extensions := parser.CommonExtensions | parser.AutoHeadingIDs
+	parser := parser.NewWithExtensions(extensions)
+	mainNode := parser.Parse(md)
+	question, err := getQuestion(mainNode)
+	if err != nil {
+		// the error is already annotated
+		return nil, err
+	}
+	cardAttribute, err := getExtendedAttrs(filepath)
+	if err != nil {
+		return nil, err
+	}
+	fmt.Println("cardAttribute:")
+	litter.Dump(string(cardAttribute))
+
+	card := &Card{
+		Version:   1,
+		Question:  question,
+		FilePath:  filepath,
+		Algorithm: NewSupermemo2(),
+	}
+	if len(cardAttribute) > 0 {
+		// if cardAttribute exists, then this is not a new card and we should
+		// bootstrap the Algorithm to use from the cardAttribute
+		// else, use the newly created card(up there)
+		newCard, err := card.Decode(bytes.NewReader(cardAttribute))
+		if err != nil {
+			return nil, err
+		}
+		fmt.Println("card from file")
+		litter.Dump(newCard)
+		card = newCard
+	}
+	return card, nil
+
 }
 
 // Encode encodes the Card value into the encoder.
