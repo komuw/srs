@@ -7,6 +7,7 @@ import (
 	"path/filepath"
 	"strconv"
 	"strings"
+	"time"
 
 	"fmt"
 	"log"
@@ -63,24 +64,20 @@ func main() {
 		"path to directory containing cards.")
 	flag.Parse()
 
-	fmt.Println("cardDir: ", cardDir)
-
 	cardDirAbs, err := filepath.Abs(cardDir)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
-	fmt.Println("cardDirAbs: ", cardDirAbs)
-	fmt.Println("\n\n")
-
 	deck := NewDeck()
 	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck))
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
-	fmt.Println("deck")
-	// litter.Dump(deck)
 
-	for _, card := range deck.Cards {
+	for k, card := range deck.Cards {
+		divider := fmt.Sprintf("\n##################### question: %d #####################\n", k+1)
+
+		fmt.Printf(divider)
 		fmt.Printf("\n\t %s \n\n", card.Question)
 		fmt.Print("Rate your answer between 1-10:")
 
@@ -104,6 +101,8 @@ func main() {
 			log.Fatalf("error: %+v", err)
 
 		}
+		fmt.Printf(divider)
+		time.Sleep(3 * time.Second)
 	}
 
 }
