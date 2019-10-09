@@ -54,8 +54,6 @@ func main() {
 		Algorithm: NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
-		// err = json.Unmarshal(cardAttribute, &card)
-
 		newCard, err := card.Decode(
 			bytes.NewReader(cardAttribute))
 		if err != nil {
@@ -80,7 +78,6 @@ func main() {
 	// After the user has rated the card and we have updated the card struct with the new metadata
 	// We need to  persist that on the markdown files' extended attributes
 	// update the card attributes with new algo
-	// algoJSON, err := json.Marshal(card)
 	var network bytes.Buffer
 	err = card.Encode(&network)
 	if err != nil {

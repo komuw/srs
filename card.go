@@ -11,25 +11,22 @@ import (
 	"github.com/pkg/xattr"
 )
 
-const attrName = "user.algo" // has to start with "user."
+// has to start with "user."
+const attrName = "user.algo"
 
 // Card represents a single card in a Deck.
 type Card struct {
-	Version  uint32
-	Question string
-	// FileContents []byte
+	Version   uint32
+	Question  string
 	FilePath  string
 	Algorithm SRSalgorithm
 }
 
-// Encode encodes the interface value into the encoder.
+// Encode encodes the Card value into the encoder.
 func (c Card) Encode(w io.Writer) error {
-	// The encode will fail unless the concrete type has been
-	// registered. We registered it in the calling function.
-
-	// Pass pointer to interface so Encode sees (and hence sends) a value of
-	// interface type. If we passed p directly it would see the concrete type instead.
-	// See the blog post, "The Laws of Reflection" for background.
+	// The Card.Algorithm concrete type(eg Supermemo2) has to be registered
+	// using gob.Register else this function will fail
+	// We registered it in main.
 
 	enc := gob.NewEncoder(w)
 	err := enc.Encode(&c)
@@ -39,11 +36,8 @@ func (c Card) Encode(w io.Writer) error {
 	return nil
 }
 
-// Decode decodes the next interface value from the stream and returns it.
+// Decode decodes the next Card value from the stream and returns it.
 func (c Card) Decode(r io.Reader) (*Card, error) {
-	// The decode will fail unless the concrete type on the wire has been
-	// registered. We registered it in the calling function.
-
 	dec := gob.NewDecoder(r)
 	err := dec.Decode(&c)
 	if err != nil {
@@ -77,8 +71,8 @@ func getQuestion(node ast.Node) (string, error) {
 	return "", errors.New("The markdown file does not contain a question")
 }
 
-func setExtendedAttrs(filepath string, algoJSON []byte) error {
-	err := xattr.Set(filepath, attrName, algoJSON)
+func setExtendedAttrs(filepath string, algoEncoded []byte) error {
+	err := xattr.Set(filepath, attrName, algoEncoded)
 	if err != nil {
 		return errors.Wrapf(err, "unable to set extended file attributes")
 	}
