@@ -47,7 +47,7 @@ func main() {
 	}
 
 	for k, card := range deck.Cards {
-		divider := fmt.Sprintf("\n##################### question: %d #####################\n", k+1)
+		divider := fmt.Sprintf("\n\t##################### question: %d #####################\n", k+1)
 
 		fmt.Printf(divider)
 		fmt.Printf("\n\t %s \n\n", card.Question)
