@@ -38,7 +38,6 @@ func (sm Supermemo2) Advance(rating float64) SRSalgorithm {
 	newSm.Easiness += 0.1 - (1-rating)*(0.4+(1-rating)*0.5)
 	newSm.Easiness = math.Max(newSm.Easiness, 1.3)
 
-	const ratingSuccess = 0.6
 	interval := 1.0
 	if rating >= ratingSuccess {
 		if newSm.Total == 2 {

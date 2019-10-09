@@ -5,6 +5,8 @@ import (
 	"time"
 )
 
+const ratingSuccess = 0.6
+
 // SRSalgorithm is the interface that all posible srs algo's should satisfy
 type SRSalgorithm interface {
 	NextReviewAt() time.Time
