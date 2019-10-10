@@ -165,7 +165,8 @@ func getuserInput() (float64, error) {
 				continue
 			}
 
-			userInput = float64(uInputInt)
+			// rating should be between 0.1 - 1.0
+			userInput = float64(uInputInt) / 10
 			break
 		}
 	}
