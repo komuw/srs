@@ -22,7 +22,7 @@ run as:
     go run cmd/main.go -d myCards/
 */
 
-const version = "0.0.1"
+var version string
 
 func init() {
 	// init funcs are bad
