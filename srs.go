@@ -16,4 +16,5 @@ type SRSalgorithm interface {
 // AlgoRegistration registers all SRS algos for gob encoding/decoding
 func AlgoRegistration() {
 	gob.Register(Supermemo2{})
+	gob.Register(Supermemo2PlusCustom{})
 }
