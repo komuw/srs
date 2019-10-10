@@ -73,6 +73,7 @@ func main() {
 			log.Fatalf("error: %+v", err)
 
 		}
+		fmt.Printf("The next reviewed is at: %s", card.Algorithm.NextReviewAt().Format("02 Jan 2006"))
 		fmt.Printf(divider)
 		time.Sleep(3 * time.Second)
 	}
