@@ -63,7 +63,7 @@ func main() {
 		fmt.Printf("There are no cards to review today in: %s\n", cardDirAbs)
 	}
 	for k, card := range deck.Cards {
-		divider := fmt.Sprintf("\t##################### question: %d #####################", k+1)
+		divider := fmt.Sprintf("\n\t##################### question: %d #####################", k+1)
 
 		fmt.Println(divider)
 		fmt.Printf("\n\t %s \n\n", card.Question)
