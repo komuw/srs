@@ -13,13 +13,13 @@ type Supermemo2PlusCustom struct {
 }
 
 // NewSupermemo2PlusCustom returns a new Supermemo2PlusCustom instance
-func NewSupermemo2PlusCustom() Supermemo2PlusCustom {
-	return Supermemo2PlusCustom{
-		LastReviewedAt: time.Now().Add(-4 * time.Hour),
-		Difficulty:     0.3,
-		Interval:       0.2,
-	}
-}
+// func NewSupermemo2PlusCustom() Supermemo2PlusCustom {
+// 	return Supermemo2PlusCustom{
+// 		LastReviewedAt: time.Now().Add(-4 * time.Hour),
+// 		Difficulty:     0.3,
+// 		Interval:       0.2,
+// 	}
+// }
 
 // NextReviewAt returns next review timestamp for a card.
 func (sm Supermemo2PlusCustom) NextReviewAt() time.Time {
