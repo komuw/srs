@@ -13,8 +13,7 @@ The main difference between this and `Leaf` is that in leaf, the cards are as `o
 
 
 # Installing/Upgrading          
-You can use [gobin](https://github.com/myitcv/gobin) to install it:                  
-`gobin github.com/komuw/srs/cmd/srs`
+TODO:
 
 
 # Usage  
