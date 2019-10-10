@@ -46,8 +46,11 @@ func main() {
 		log.Fatalf("error: %+v", err)
 	}
 
+	if len(deck.Cards) == 0 {
+		fmt.Printf("There are no cards to review today in: %s\n", cardDirAbs)
+	}
 	for k, card := range deck.Cards {
-		divider := fmt.Sprintf("\n\t##################### question: %d #####################\n", k+1)
+		divider := fmt.Sprintf("\t##################### question: %d #####################\n", k+1)
 
 		fmt.Printf(divider)
 		fmt.Printf("\n\t %s \n\n", card.Question)
@@ -105,8 +108,17 @@ func walkFnClosure(src string, deck *srs.Deck) filepath.WalkFunc {
 		if err != nil {
 			return err
 		}
-		deck.Cards = append(deck.Cards, *card)
 
+		// If the next review date for a card is not today;
+		// it should not be added to the deck.
+		// However if next review date is in the past;
+		// it should be added.
+		now := time.Now()
+		nextReview := card.Algorithm.NextReviewAt()
+		if now.Sub(nextReview) >= 0 {
+			// the duration `now - nextReview`
+			deck.Cards = append(deck.Cards, *card)
+		}
 		return nil
 	}
 }
