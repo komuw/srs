@@ -80,15 +80,6 @@ jobs:
         if: github.ref == 'refs/heads/master'
         uses: actions/checkout@v1
 
-      - name: install apt and pip deps
-        if: github.ref == 'refs/heads/master'
-        run: |
-          pwd; ls -lsha
-          sudo apt-get -y update
-          sudo apt -y install \
-                      wget \
-                      git
-
       - name: install go releaser
         if: github.ref == 'refs/heads/master'
         run: |
@@ -103,7 +94,7 @@ jobs:
         run: |
           echo 'deploying with goreleaser'
           source /etc/profile
-          /tmp/goreleaser release --rm-dist  --debug --skip-validate --skip-sign --config=.goreleaser.yml --timeout=5m --snapshot # snapshot since we do not have any git tags
+          /tmp/goreleaser release --rm-dist  --debug --skip-validate --skip-sign --config=.goreleaser.yml --timeout=5m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
