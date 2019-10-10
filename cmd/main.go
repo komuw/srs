@@ -63,9 +63,9 @@ func main() {
 		fmt.Printf("There are no cards to review today in: %s\n", cardDirAbs)
 	}
 	for k, card := range deck.Cards {
-		divider := fmt.Sprintf("\n\t##################### question: %d #####################\n", k+1)
+		divider := fmt.Sprintf("\t##################### question: %d #####################", k+1)
 
-		fmt.Printf(divider)
+		fmt.Println(divider)
 		fmt.Printf("\n\t %s \n\n", card.Question)
 		fmt.Print("Rate your answer between 1-10:")
 
@@ -90,7 +90,7 @@ func main() {
 
 		}
 		fmt.Printf("The next reviewed is at: %s", card.Algorithm.NextReviewAt().Format("02 Jan 2006"))
-		fmt.Printf(divider)
+		fmt.Println(divider)
 		time.Sleep(3 * time.Second)
 	}
 
