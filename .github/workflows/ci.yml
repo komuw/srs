@@ -96,14 +96,14 @@ jobs:
           tar -C /tmp -xzf /tmp/goreleaser_Linux_x86_64.tar.gz
           chmod +x /tmp/goreleaser
         env:
-          GORELEASER_VERSION: 'v0.117.1'
+          GORELEASER_VERSION: 'v0.119.0'
 
       - name: do new release
         if: github.ref == 'refs/heads/master'
         run: |
           echo 'deploying with goreleaser'
           source /etc/profile
-          /tmp/goreleaser --rm-dist --config=.goreleaser.yml --debug --skip-validate --skip-sign --release-notes=.github/RELEASE_NOTES.md
+          /tmp/goreleaser release --rm-dist  --debug --skip-validate --skip-sign --config=.goreleaser.yml --timeout=5m --snapshot # snapshot since we do not have any git tags
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
