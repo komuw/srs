@@ -48,6 +48,10 @@ func main() {
 		fmt.Println("Srs version: ", version)
 		os.Exit(0)
 	}
+	if cardDir == "" {
+		fmt.Println("You should provide a path to your cards collection")
+		os.Exit(1)
+	}
 
 	cardDirAbs, err := filepath.Abs(cardDir)
 	if err != nil {
