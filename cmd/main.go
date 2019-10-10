@@ -22,19 +22,32 @@ run as:
     go run cmd/main.go -d myCards/
 */
 
+const version = "0.0.1"
+
 func init() {
 	// init funcs are bad
 	srs.AlgoRegistration()
 }
 
 func main() {
+	var showVersion bool
 	var cardDir string
+	flag.BoolVar(
+		&showVersion,
+		"v",
+		false,
+		"Show version information.")
 	flag.StringVar(
 		&cardDir,
 		"d",
 		"",
 		"path to directory containing cards.")
 	flag.Parse()
+
+	if showVersion {
+		fmt.Println("Srs version: ", version)
+		os.Exit(0)
+	}
 
 	cardDirAbs, err := filepath.Abs(cardDir)
 	if err != nil {
