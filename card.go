@@ -109,6 +109,8 @@ func (c Card) Decode(r io.Reader) (*Card, error) {
 
 // Rate a Card.
 func (c *Card) Rate(uInput float64) {
+	// the receiver needs to be a pointer so that the changes
+	// can propagate back
 	sm := c.Algorithm.Advance(uInput)
 	c.Algorithm = sm
 }
