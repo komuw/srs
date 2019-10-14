@@ -97,4 +97,3 @@ jobs:
           /tmp/goreleaser release --rm-dist  --debug --skip-validate --skip-sign --config=.goreleaser.yml --timeout=5m
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
