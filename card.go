@@ -59,13 +59,14 @@ func NewCard(filepath string) (*Card, error) {
 		Version:   1,
 		Question:  question,
 		FilePath:  filepath,
-		Algorithm: NewSupermemo2(),
+		Algorithm: NewEbisu(), //NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
 		// if cardAttribute exists, then this is not a new card and we should
 		// bootstrap the Algorithm to use from the cardAttribute
 		// else, use the newly created card(up there)
-		card, err = card.Decode(bytes.NewReader(cardAttribute))
+		newCard, err := card.Decode(bytes.NewReader(cardAttribute))
+		card = newCard
 		if err != nil {
 			return nil, err
 		}

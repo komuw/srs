@@ -17,4 +17,5 @@ type SRSalgorithm interface {
 func AlgoRegistration() {
 	gob.Register(Supermemo2{})
 	gob.Register(Supermemo2PlusCustom{})
+	gob.Register(Ebisu{})
 }
