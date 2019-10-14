@@ -6,12 +6,13 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"os/exec"
 
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/pkg/errors"
 	"github.com/pkg/xattr"
+
+	"github.com/alecthomas/chroma/quick"
 )
 
 // has to start with "user."
@@ -117,12 +118,14 @@ func (c *Card) Rate(uInput float64) {
 
 // Display shows cards content to terminal
 func (c Card) Display() error {
-	cmd := exec.Command("bat", "-p", c.FilePath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
+	source, err := ioutil.ReadFile(c.FilePath)
 	if err != nil {
-		return errors.Wrapf(err, "unable to open %v for reading", c.FilePath)
+		return errors.Wrapf(err, "unable to read file %v", c.FilePath)
+
+	}
+	err = quick.Highlight(os.Stdout, string(source), "markdown", "terminal16m", "pygments") // some other good styles: paraiso-dark, native, fruity, rrt
+	if err != nil {
+		return errors.Wrapf(err, "unable to render %s on screen", c.FilePath)
 	}
 	return nil
 }
