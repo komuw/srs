@@ -15,15 +15,15 @@ type Supermemo2 struct {
 }
 
 // NewSupermemo2 returns a new Supermemo2 instance
-func NewSupermemo2() Supermemo2 {
-	return Supermemo2{
-		LastReviewedAt: time.Now(),
-		Interval:       0,
-		Easiness:       2.5,
-		Correct:        0,
-		Total:          0,
-	}
-}
+// func NewSupermemo2() Supermemo2 {
+// 	return Supermemo2{
+// 		LastReviewedAt: time.Now(),
+// 		Interval:       0,
+// 		Easiness:       2.5,
+// 		Correct:        0,
+// 		Total:          0,
+// 	}
+// }
 
 // NextReviewAt returns next review timestamp for a card.
 func (sm Supermemo2) NextReviewAt() time.Time {

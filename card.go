@@ -6,12 +6,13 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
-	"os/exec"
 
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/pkg/errors"
 	"github.com/pkg/xattr"
+
+	"github.com/alecthomas/chroma/quick"
 )
 
 // has to start with "user."
@@ -59,17 +60,17 @@ func NewCard(filepath string) (*Card, error) {
 		Version:   1,
 		Question:  question,
 		FilePath:  filepath,
-		Algorithm: NewSupermemo2(),
+		Algorithm: NewEbisu(), // NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
 		// if cardAttribute exists, then this is not a new card and we should
 		// bootstrap the Algorithm to use from the cardAttribute
 		// else, use the newly created card(up there)
 		newCard, err := card.Decode(bytes.NewReader(cardAttribute))
+		card = newCard
 		if err != nil {
 			return nil, err
 		}
-		card = newCard
 	}
 	return card, nil
 
@@ -117,12 +118,14 @@ func (c *Card) Rate(uInput float64) {
 
 // Display shows cards content to terminal
 func (c Card) Display() error {
-	cmd := exec.Command("bat", "-p", c.FilePath)
-	cmd.Stdout = os.Stdout
-	cmd.Stderr = os.Stderr
-	err := cmd.Run()
+	source, err := ioutil.ReadFile(c.FilePath)
 	if err != nil {
-		return errors.Wrapf(err, "unable to open %v for reading", c.FilePath)
+		return errors.Wrapf(err, "unable to read file %v", c.FilePath)
+
+	}
+	err = quick.Highlight(os.Stdout, string(source), "markdown", "terminal16m", "pygments") // some other good styles: paraiso-dark, native, fruity, rrt
+	if err != nil {
+		return errors.Wrapf(err, "unable to render %s on screen", c.FilePath)
 	}
 	return nil
 }

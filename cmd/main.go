@@ -67,10 +67,11 @@ func main() {
 		fmt.Printf("There are no cards to review today in: %s\n", cardDirAbs)
 	}
 	for k, card := range deck.Cards {
+		newCard := card //iteration bug
 		divider := fmt.Sprintf("\n\t##################### question: %d #####################", k+1)
 
 		fmt.Println(divider)
-		fmt.Printf("\n\t %s \n\n", card.Question)
+		fmt.Printf("\n\t %s \n\n", newCard.Question)
 		fmt.Print("Rate your answer between 1-10:")
 
 		uInput, err := getuserInput()
@@ -79,21 +80,21 @@ func main() {
 		}
 
 		// rate card
-		card.Rate(uInput)
+		newCard.Rate(uInput)
 
 		// persist new metadata
-		err = card.Encode()
+		err = newCard.Encode()
 		if err != nil {
 			log.Fatalf("error: %+v", err)
 		}
 
 		// display the answer to the user
-		err = card.Display()
+		err = newCard.Display()
 		if err != nil {
 			log.Fatalf("error: %+v", err)
 
 		}
-		fmt.Printf("The next reviewed is at: %s", card.Algorithm.NextReviewAt().Format("02 Jan 2006"))
+		fmt.Printf("The next reviewed is at: %s", newCard.Algorithm.NextReviewAt().Format("02 Jan 2006"))
 		fmt.Println(divider)
 		time.Sleep(3 * time.Second)
 	}
