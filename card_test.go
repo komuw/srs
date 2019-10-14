@@ -35,7 +35,7 @@ func TestCardReviewAt(t *testing.T) {
 
 func TestCardAdvance(t *testing.T) {
 
-	t.Run("rating less than `ratingSuccess`", func(t *testing.T) {
+	t.Run("rating less than ratingSuccess", func(t *testing.T) {
 		// rating less than `ratingSuccess`
 		rating := 0.4
 		cardPath := "./testdata/test1.md"
@@ -53,7 +53,7 @@ func TestCardAdvance(t *testing.T) {
 
 	})
 
-	t.Run("rating greater than `ratingSuccess`", func(t *testing.T) {
+	t.Run("rating greater than ratingSuccess", func(t *testing.T) {
 		// rating greater than `ratingSuccess`
 		rating := 0.9
 		cardPath := "./testdata/test1.md"
@@ -71,7 +71,7 @@ func TestCardAdvance(t *testing.T) {
 
 	})
 
-	t.Run("multiple rating less than `ratingSuccess`", func(t *testing.T) {
+	t.Run("multiple rating less than ratingSuccess", func(t *testing.T) {
 		// multiple rating less than `ratingSuccess`
 		rating := 0.4
 		cardPath := "./testdata/test1.md"
@@ -98,7 +98,7 @@ func TestCardAdvance(t *testing.T) {
 
 	})
 
-	t.Run("multiple rating greater than `ratingSuccess`", func(t *testing.T) {
+	t.Run("multiple rating greater than ratingSuccess", func(t *testing.T) {
 		// multiple rating greater than `ratingSuccess`
 		rating := 0.8
 		cardPath := "./testdata/test1.md"
