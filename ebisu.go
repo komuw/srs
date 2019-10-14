@@ -1,11 +1,8 @@
 package srs
 
 import (
-	"fmt"
 	"math"
 	"time"
-
-	"github.com/sanity-io/litter"
 )
 
 type model struct {
@@ -39,9 +36,6 @@ func (eb Ebisu) NextReviewAt() time.Time {
 
 // Advance advances supermemo state for a card.
 func (eb Ebisu) Advance(rating float64) SRSalgorithm {
-
-	fmt.Println("old eb: ", eb.NextReviewAt())
-	litter.Dump(eb)
 	newEb := eb
 
 	model := &model{newEb.Alpha, newEb.Beta, newEb.Interval}
@@ -53,8 +47,6 @@ func (eb Ebisu) Advance(rating float64) SRSalgorithm {
 	newEb.Interval = proposed.T
 	newEb.LastReviewedAt = time.Now()
 
-	fmt.Println("new eb: ", newEb.NextReviewAt())
-	litter.Dump(newEb)
 	return newEb
 }
 
