@@ -65,11 +65,10 @@ func NewCard(filepath string) (*Card, error) {
 		// if cardAttribute exists, then this is not a new card and we should
 		// bootstrap the Algorithm to use from the cardAttribute
 		// else, use the newly created card(up there)
-		newCard, err := card.Decode(bytes.NewReader(cardAttribute))
+		card, err = card.Decode(bytes.NewReader(cardAttribute))
 		if err != nil {
 			return nil, err
 		}
-		card = newCard
 	}
 	return card, nil
 
