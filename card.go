@@ -60,7 +60,7 @@ func NewCard(filepath string) (*Card, error) {
 		Version:   1,
 		Question:  question,
 		FilePath:  filepath,
-		Algorithm: NewSupermemo2(), //NewEbisu(),
+		Algorithm: NewEbisu(), // NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
 		// if cardAttribute exists, then this is not a new card and we should
