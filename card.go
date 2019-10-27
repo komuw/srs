@@ -6,14 +6,53 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"time"
 
 	"github.com/gomarkdown/markdown/ast"
 	"github.com/gomarkdown/markdown/parser"
 	"github.com/pkg/errors"
-	"github.com/pkg/xattr"
 
 	"github.com/alecthomas/chroma/quick"
+
+	"go.etcd.io/bbolt"
 )
+
+func OpenDb(dbPath string) (*bbolt.DB, error) {
+	// caller should close the database
+	db, err := bbolt.Open(dbPath, 0600, &bbolt.Options{Timeout: 3 * time.Second})
+
+	if err != nil {
+		return nil, errors.Wrapf(err, "unable to open DB at path %v", dbPath)
+	}
+	return db, nil
+}
+
+func saveCard(db *bbolt.DB, card string, data []byte) error {
+	var err error
+	db.Update(func(tx *bbolt.Tx) error {
+		b, err := tx.CreateBucketIfNotExists([]byte(card))
+		if err != nil {
+			return errors.Wrapf(err, "unable to create bucket: %v", card)
+		}
+
+		return b.Put([]byte(card), data)
+	})
+	return err
+}
+
+func getCard(db *bbolt.DB, card string) ([]byte, error) {
+	var err error
+	var data []byte
+	db.Update(func(tx *bbolt.Tx) error {
+		b, err := tx.CreateBucketIfNotExists([]byte(card))
+		if err != nil {
+			return errors.Wrapf(err, "unable to create bucket: %v", card)
+		}
+		data = b.Get([]byte(card))
+		return nil
+	})
+	return data, err
+}
 
 // has to start with "user."
 const attrName = "user.algo"
@@ -37,7 +76,7 @@ type Card struct {
 }
 
 // NewCard returns a new Card
-func NewCard(filepath string) (*Card, error) {
+func NewCard(filepath string, db *bbolt.DB) (*Card, error) {
 	md, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "unable to read file %v", filepath)
@@ -51,7 +90,8 @@ func NewCard(filepath string) (*Card, error) {
 		// the error is already annotated
 		return nil, err
 	}
-	cardAttribute, err := getExtendedAttrs(filepath)
+
+	cardAttribute, err := getCard(db, question)
 	if err != nil {
 		return nil, err
 	}
@@ -77,7 +117,7 @@ func NewCard(filepath string) (*Card, error) {
 }
 
 // Encode encodes the Card value into the encoder.
-func (c Card) Encode() error {
+func (c Card) Encode(db *bbolt.DB) error {
 	// The Card.Algorithm concrete type(eg Supermemo2) has to be registered
 	// using gob.Register else this function will fail
 	// We registered it in main.
@@ -90,7 +130,7 @@ func (c Card) Encode() error {
 		return errors.Wrapf(err, "unable to encode card %v", c)
 	}
 
-	err = c.setExtendedAttrs(w.Bytes())
+	err = saveCard(db, c.Question, w.Bytes())
 	if err != nil {
 		return err
 	}
@@ -128,23 +168,6 @@ func (c Card) Display() error {
 		return errors.Wrapf(err, "unable to render %s on screen", c.FilePath)
 	}
 	return nil
-}
-
-// SetExtendedAttrs sets the files extra metadata
-func (c Card) setExtendedAttrs(algoEncoded []byte) error {
-	err := xattr.Set(c.FilePath, attrName, algoEncoded)
-	if err != nil {
-		return errors.Wrapf(err, "unable to set extended file attributes")
-	}
-	return nil
-}
-
-func getExtendedAttrs(filepath string) ([]byte, error) {
-	attribute, err := xattr.Get(filepath, attrName)
-	if len(attribute) > 0 && err != nil {
-		return []byte(""), errors.Wrapf(err, "unable to get extended file attributes")
-	}
-	return attribute, nil
 }
 
 func getQuestion(node ast.Node) (string, error) {

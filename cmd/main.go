@@ -13,6 +13,7 @@ import (
 	"log"
 
 	"github.com/pkg/errors"
+	"go.etcd.io/bbolt"
 
 	"github.com/komuw/srs"
 )
@@ -32,6 +33,7 @@ func init() {
 func main() {
 	var showVersion bool
 	var cardDir string
+	var dbPath string
 	flag.BoolVar(
 		&showVersion,
 		"v",
@@ -42,6 +44,11 @@ func main() {
 		"d",
 		"",
 		"path to directory containing cards.")
+	flag.StringVar(
+		&dbPath,
+		"db",
+		"",
+		"db path.")
 	flag.Parse()
 
 	if showVersion {
@@ -52,13 +59,23 @@ func main() {
 		fmt.Println("You should provide a path to your cards collection")
 		os.Exit(1)
 	}
+	if dbPath == "" {
+		fmt.Println("You should provide a path to your db")
+		os.Exit(1)
+	}
+
+	db, err := srs.OpenDb(dbPath)
+	if err != nil {
+		log.Fatalf("error: %+v", err)
+	}
+	defer db.Close()
 
 	cardDirAbs, err := filepath.Abs(cardDir)
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
 	deck := srs.NewDeck()
-	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck))
+	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck, db))
 	if err != nil {
 		log.Fatalf("error: %+v", err)
 	}
@@ -83,7 +100,7 @@ func main() {
 		newCard.Rate(uInput)
 
 		// persist new metadata
-		err = newCard.Encode()
+		err = newCard.Encode(db)
 		if err != nil {
 			log.Fatalf("error: %+v", err)
 		}
@@ -101,7 +118,7 @@ func main() {
 
 }
 
-func walkFnClosure(src string, deck *srs.Deck) filepath.WalkFunc {
+func walkFnClosure(src string, deck *srs.Deck, db *bbolt.DB) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			// todo: maybe we should return nil
@@ -122,7 +139,7 @@ func walkFnClosure(src string, deck *srs.Deck) filepath.WalkFunc {
 			return nil
 		}
 
-		card, err := srs.NewCard(path)
+		card, err := srs.NewCard(path, db)
 		if err != nil {
 			return err
 		}
