@@ -34,6 +34,7 @@ func main() {
 	var showVersion bool
 	var cardDir string
 	var dbPath string
+	var stats bool
 	flag.BoolVar(
 		&showVersion,
 		"v",
@@ -49,6 +50,11 @@ func main() {
 		"db",
 		"",
 		"db path.")
+	flag.BoolVar(
+		&stats,
+		"stats",
+		false,
+		"Show card stats.")
 	flag.Parse()
 
 	if showVersion {
@@ -75,9 +81,20 @@ func main() {
 		log.Fatalf("error: %+v", err)
 	}
 	deck := srs.NewDeck()
-	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck, db))
+	err = filepath.Walk(cardDirAbs, walkFnClosure(cardDirAbs, deck, db, stats))
 	if err != nil {
 		log.Fatalf("error: %+v", err)
+	}
+
+	if stats {
+		fmt.Println("CARD STATS:")
+		for _, card := range deck.Cards {
+			newCard := card //iteration bug
+
+			msg := fmt.Sprintf("card: %s\n next review at: %s\n", newCard.FilePath, card.Algorithm.NextReviewAt().Format("02 Jan 2006"))
+			fmt.Println(msg)
+		}
+		os.Exit(0)
 	}
 
 	if len(deck.Cards) == 0 {
@@ -118,7 +135,7 @@ func main() {
 
 }
 
-func walkFnClosure(src string, deck *srs.Deck, db *bbolt.DB) filepath.WalkFunc {
+func walkFnClosure(src string, deck *srs.Deck, db *bbolt.DB, stats bool) filepath.WalkFunc {
 	return func(path string, info os.FileInfo, err error) error {
 		if err != nil {
 			// todo: maybe we should return nil
@@ -144,15 +161,20 @@ func walkFnClosure(src string, deck *srs.Deck, db *bbolt.DB) filepath.WalkFunc {
 			return err
 		}
 
-		// If the next review date for a card is not today;
-		// it should not be added to the deck.
-		// However if next review date is in the past;
-		// it should be added.
-		now := time.Now()
-		nextReview := card.Algorithm.NextReviewAt()
-		if now.Sub(nextReview) >= 0 {
-			// the duration `now - nextReview`
+		if stats {
+			// add all cards to deck
 			deck.Cards = append(deck.Cards, *card)
+		} else {
+			// If the next review date for a card is not today;
+			// it should not be added to the deck.
+			// However if next review date is in the past;
+			// it should be added.
+			now := time.Now()
+			nextReview := card.Algorithm.NextReviewAt()
+			if now.Sub(nextReview) >= 0 {
+				// the duration `now - nextReview`
+				deck.Cards = append(deck.Cards, *card)
+			}
 		}
 		return nil
 	}

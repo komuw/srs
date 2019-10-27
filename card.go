@@ -72,8 +72,8 @@ func NewCard(filepath string, db *bbolt.DB) (*Card, error) {
 			return nil, err
 		}
 	}
-	return card, nil
 
+	return card, nil
 }
 
 // Encode encodes the Card value into the encoder.
