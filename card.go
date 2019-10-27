@@ -17,46 +17,6 @@ import (
 	"go.etcd.io/bbolt"
 )
 
-func OpenDb(dbPath string) (*bbolt.DB, error) {
-	// caller should close the database
-	db, err := bbolt.Open(dbPath, 0600, &bbolt.Options{Timeout: 3 * time.Second})
-
-	if err != nil {
-		return nil, errors.Wrapf(err, "unable to open DB at path %v", dbPath)
-	}
-	return db, nil
-}
-
-func saveCard(db *bbolt.DB, card string, data []byte) error {
-	var err error
-	db.Update(func(tx *bbolt.Tx) error {
-		b, err := tx.CreateBucketIfNotExists([]byte(card))
-		if err != nil {
-			return errors.Wrapf(err, "unable to create bucket: %v", card)
-		}
-
-		return b.Put([]byte(card), data)
-	})
-	return err
-}
-
-func getCard(db *bbolt.DB, card string) ([]byte, error) {
-	var err error
-	var data []byte
-	db.Update(func(tx *bbolt.Tx) error {
-		b, err := tx.CreateBucketIfNotExists([]byte(card))
-		if err != nil {
-			return errors.Wrapf(err, "unable to create bucket: %v", card)
-		}
-		data = b.Get([]byte(card))
-		return nil
-	})
-	return data, err
-}
-
-// has to start with "user."
-const attrName = "user.algo"
-
 // Deck represents a collection of the cards to review.
 type Deck struct {
 	Cards []Card
@@ -181,4 +141,41 @@ func getQuestion(node ast.Node) (string, error) {
 		}
 	}
 	return "", errors.New("The markdown file does not contain a question")
+}
+
+func OpenDb(dbPath string) (*bbolt.DB, error) {
+	// caller should close the database
+	db, err := bbolt.Open(dbPath, 0600, &bbolt.Options{Timeout: 3 * time.Second})
+
+	if err != nil {
+		return nil, errors.Wrapf(err, "unable to open DB at path %v", dbPath)
+	}
+	return db, nil
+}
+
+func saveCard(db *bbolt.DB, card string, data []byte) error {
+	var err error
+	db.Update(func(tx *bbolt.Tx) error {
+		b, err := tx.CreateBucketIfNotExists([]byte(card))
+		if err != nil {
+			return errors.Wrapf(err, "unable to create bucket: %v", card)
+		}
+
+		return b.Put([]byte(card), data)
+	})
+	return err
+}
+
+func getCard(db *bbolt.DB, card string) ([]byte, error) {
+	var err error
+	var data []byte
+	db.Update(func(tx *bbolt.Tx) error {
+		b, err := tx.CreateBucketIfNotExists([]byte(card))
+		if err != nil {
+			return errors.Wrapf(err, "unable to create bucket: %v", card)
+		}
+		data = b.Get([]byte(card))
+		return nil
+	})
+	return data, err
 }
