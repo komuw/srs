@@ -38,10 +38,12 @@ func TestCardCreation(t *testing.T) {
 	}
 	defer db.Close()
 
-	cardPath := "./testdata/test1.md"
-	_, err = NewCard(cardPath, db)
+	filename := "test1.md"
+	cardDir := "./testdata/"
+	_, err = NewCard(filename, cardDir, db)
+	// NewCard(filename string, cardDir string, db *bbolt.DB)
 	if err != nil {
-		t.Errorf("\nCalled NewCard(%#+v) \ngot %s \nwanted %#+v", cardPath, err, nil)
+		t.Errorf("\nCalled NewCard(%#+v) \ngot %s \nwanted %#+v", filename, err, nil)
 	}
 
 }
@@ -55,10 +57,11 @@ func TestCardReviewAt(t *testing.T) {
 	}
 	defer db.Close()
 
-	cardPath := "./testdata/test1.md"
-	card, err := NewCard(cardPath, db)
+	filename := "test1.md"
+	cardDir := "./testdata/"
+	card, err := NewCard(filename, cardDir, db)
 	if err != nil {
-		t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", cardPath, err, nil)
+		t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", filename, err, nil)
 	}
 
 	now := time.Now()
@@ -82,10 +85,11 @@ func TestCardAdvance(t *testing.T) {
 	t.Run("rating less than ratingSuccess", func(t *testing.T) {
 		// rating less than `ratingSuccess`
 		rating := 0.4
-		cardPath := "./testdata/test1.md"
-		card, err := NewCard(cardPath, db)
+		filename := "test1.md"
+		cardDir := "./testdata/"
+		card, err := NewCard(filename, cardDir, db)
 		if err != nil {
-			t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", cardPath, err, nil)
+			t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", filename, err, nil)
 		}
 
 		card.Rate(rating)
@@ -100,10 +104,11 @@ func TestCardAdvance(t *testing.T) {
 	t.Run("rating greater than ratingSuccess", func(t *testing.T) {
 		// rating greater than `ratingSuccess`
 		rating := 0.9
-		cardPath := "./testdata/test1.md"
-		card, err := NewCard(cardPath, db)
+		filename := "test1.md"
+		cardDir := "./testdata/"
+		card, err := NewCard(filename, cardDir, db)
 		if err != nil {
-			t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", cardPath, err, nil)
+			t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", filename, err, nil)
 		}
 
 		card.Rate(rating)
@@ -118,10 +123,10 @@ func TestCardAdvance(t *testing.T) {
 	// t.Run("multiple rating less than ratingSuccess", func(t *testing.T) {
 	// 	// multiple rating less than `ratingSuccess`
 	// 	rating := 0.4
-	// 	cardPath := "./testdata/test1.md"
-	// 	card, err := NewCard(cardPath)
+	// 	filename := "test1.md"
+	// 	card, err := NewCard(filename)
 	// 	if err != nil {
-	// 		t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", cardPath, err, nil)
+	// 		t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", filename, err, nil)
 	// 	}
 
 	// 	card.Rate(rating)
@@ -145,10 +150,10 @@ func TestCardAdvance(t *testing.T) {
 	// t.Run("multiple rating greater than ratingSuccess", func(t *testing.T) {
 	// 	// multiple rating greater than `ratingSuccess`
 	// 	rating := 0.8
-	// 	cardPath := "./testdata/test1.md"
-	// 	card, err := NewCard(cardPath)
+	// 	filename := "test1.md"
+	// 	card, err := NewCard(filename)
 	// 	if err != nil {
-	// 		t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", cardPath, err, nil)
+	// 		t.Errorf("\nCalled NewCard(%#+v) \ngot %#+v \nwanted %#+v", filename, err, nil)
 	// 	}
 
 	// 	card.Rate(rating)
