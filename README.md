@@ -28,4 +28,3 @@ TODO:
 `(dlv) continue`          
 `(dlv) call getQuestion(mainNode)`
 
-
