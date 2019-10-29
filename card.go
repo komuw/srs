@@ -6,6 +6,7 @@ import (
 	"io"
 	"io/ioutil"
 	"os"
+	"path/filepath"
 	"time"
 
 	"github.com/gomarkdown/markdown/ast"
@@ -31,12 +32,14 @@ func NewDeck() *Deck {
 type Card struct {
 	Version   uint32
 	Question  string
-	FilePath  string
+	FileName  string
+	CardDir   string
 	Algorithm SRSalgorithm
 }
 
 // NewCard returns a new Card
-func NewCard(filepath string, db *bbolt.DB) (*Card, error) {
+func NewCard(filename string, cardDir string, db *bbolt.DB) (*Card, error) {
+	filepath := filepath.Join(cardDir, filename)
 	md, err := ioutil.ReadFile(filepath)
 	if err != nil {
 		return nil, errors.Wrapf(err, "unable to read file %v", filepath)
@@ -57,9 +60,10 @@ func NewCard(filepath string, db *bbolt.DB) (*Card, error) {
 	}
 
 	card := &Card{
-		Version:   1,
-		Question:  question,
-		FilePath:  filepath,
+		Version:  1,
+		Question: question,
+		FileName: filename,
+
 		Algorithm: NewEbisu(), // NewSupermemo2(),
 	}
 	if len(cardAttribute) > 0 {
@@ -72,8 +76,14 @@ func NewCard(filepath string, db *bbolt.DB) (*Card, error) {
 			return nil, err
 		}
 	}
+	card.CardDir = cardDir
 
 	return card, nil
+}
+
+// Path returns the absolute path to a card on disk.
+func (c Card) Path() string {
+	return filepath.Join(c.CardDir, c.FileName)
 }
 
 // Encode encodes the Card value into the encoder.
@@ -118,14 +128,15 @@ func (c *Card) Rate(uInput float64) {
 
 // Display shows cards content to terminal
 func (c Card) Display() error {
-	source, err := ioutil.ReadFile(c.FilePath)
+	filepath := c.Path()
+	source, err := ioutil.ReadFile(filepath)
 	if err != nil {
-		return errors.Wrapf(err, "unable to read file %v", c.FilePath)
+		return errors.Wrapf(err, "unable to read file %v", filepath)
 
 	}
 	err = quick.Highlight(os.Stdout, string(source), "markdown", "terminal16m", "pygments") // some other good styles: paraiso-dark, native, fruity, rrt
 	if err != nil {
-		return errors.Wrapf(err, "unable to render %s on screen", c.FilePath)
+		return errors.Wrapf(err, "unable to render %s on screen", filepath)
 	}
 	return nil
 }
