@@ -26,5 +26,6 @@ TODO:
 `(dlv) help`        
 `(dlv) break cmd/main.go:23`        
 `(dlv) continue`          
+`(dlv) call getQuestion(mainNode)`
 
 
