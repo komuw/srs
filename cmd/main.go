@@ -91,7 +91,7 @@ func main() {
 		for _, card := range deck.Cards {
 			newCard := card //iteration bug
 
-			msg := fmt.Sprintf("card: %s\n next review at: %s\n", newCard.FilePath, card.Algorithm.NextReviewAt().Format("02 Jan 2006"))
+			msg := fmt.Sprintf("card: %s\n next review at: %s\n", newCard.Path(), card.Algorithm.NextReviewAt().Format("02 Jan 2006"))
 			fmt.Println(msg)
 		}
 		os.Exit(0)
@@ -130,7 +130,7 @@ func main() {
 		}
 		fmt.Printf("The next reviewed is at: %s", newCard.Algorithm.NextReviewAt().Format("02 Jan 2006"))
 		fmt.Println(divider)
-		time.Sleep(3 * time.Second)
+		time.Sleep(2 * time.Second)
 	}
 
 }
@@ -156,7 +156,7 @@ func walkFnClosure(src string, deck *srs.Deck, db *bbolt.DB, stats bool) filepat
 			return nil
 		}
 
-		card, err := srs.NewCard(path, db)
+		card, err := srs.NewCard(info.Name(), filepath.Dir(path), db)
 		if err != nil {
 			return err
 		}

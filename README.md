@@ -21,10 +21,11 @@ TODO:
                
 
 #### debug
-`go build -o srs cmd/main.go`       
-`dlv exec ./srs -- -d myCards/`         
+`go build -gcflags="all=-N -l" -o srs cmd/main.go` 
+`dlv exec ./srs -- -d myCards/ -db myCards/srs.db`         
 `(dlv) help`        
 `(dlv) break cmd/main.go:23`        
 `(dlv) continue`          
+`(dlv) call getQuestion(mainNode)`
 
 
