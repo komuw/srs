@@ -60,11 +60,10 @@ func NewCard(filename string, cardDir string, db *bbolt.DB) (*Card, error) {
 	}
 
 	card := &Card{
-		Version:  1,
-		Question: question,
-		FileName: filename,
-
-		Algorithm: NewEbisu(), // NewSupermemo2(),
+		Version:   1,
+		Question:  question,
+		FileName:  filename,
+		Algorithm: NewSupermemo2(), //  NewEbisu()
 	}
 	if len(cardAttribute) > 0 {
 		// if cardAttribute exists, then this is not a new card and we should

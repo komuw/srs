@@ -20,14 +20,14 @@ type Ebisu struct {
 }
 
 // NewEbisu consturcts a new Ebisu instance.
-func NewEbisu() Ebisu {
-	return Ebisu{
-		LastReviewedAt: time.Now().Add(-24 * time.Hour),
-		Alpha:          3,
-		Beta:           3,
-		Interval:       24,
-	}
-}
+// func NewEbisu() Ebisu {
+// 	return Ebisu{
+// 		LastReviewedAt: time.Now().Add(-24 * time.Hour),
+// 		Alpha:          3,
+// 		Beta:           3,
+// 		Interval:       24,
+// 	}
+// }
 
 // NextReviewAt returns next review timestamp for a card.
 func (eb Ebisu) NextReviewAt() time.Time {
