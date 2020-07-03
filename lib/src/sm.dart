@@ -1,7 +1,5 @@
 import "dart:math" as math;
 
-
-
 enum Rating { Hardest, Hard, Medium, Easy, Easiest }
 
 num sm2(List<Rating> historyOfRatings) {

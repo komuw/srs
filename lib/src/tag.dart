@@ -1,4 +1,5 @@
 import "dart:math" as math;
+import "./exceptions.dart" as e;
 
 class Tag {
   String name;
@@ -9,6 +10,9 @@ class Tag {
   late DateTime updatedAt;
 
   Tag(this.name, this.description) {
+    if (name.contains(" ")) {
+      throw e.SrsException("tag's name should be one word");
+    }
     var now = DateTime.now().toUtc();
     createdAt = now;
     updatedAt = now;
