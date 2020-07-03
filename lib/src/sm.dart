@@ -1,8 +1,6 @@
 import "dart:math" as math;
 
-/*
-  dart format .; dart --enable-experiment=non-nullable lib/srs.dart
-*/
+
 
 enum Rating { Hardest, Hard, Medium, Easy, Easiest }
 
