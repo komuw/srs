@@ -1,0 +1,13 @@
+name: srs
+version: 0.0.1
+authors:
+  - Komu Wairagu <https://www.komu.engineer/>
+description: SRS app.
+homepage: todo
+
+environment:
+  sdk: '>=2.9.0-19.0.dev <3.0.0'
+
+dev_dependencies:
+  test: '>=1.15.1'
+  pedantic: '>1.0.0'

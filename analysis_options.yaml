@@ -1,0 +1,39 @@
+analyzer:
+  enable-experiment:
+    - non-nullable
+
+  strong-mode:
+    implicit-casts: false
+    implicit-dynamic: false
+
+linter:
+  rules:
+    # error
+    - annotate_overrides
+    - avoid_returning_null_for_future
+    - avoid_slow_async_io
+    - empty_statements
+    - prefer_void_to_null
+    - unsafe_html
+    - unawaited_futures
+    # style
+    - unnecessary_new
+    - unnecessary_const
+    - unnecessary_this
+    - curly_braces_in_flow_control_structures
+    - avoid_shadowing_type_parameters
+    - avoid_types_as_parameter_names
+    - avoid_empty_else
+    - always_declare_return_types
+    - avoid_return_types_on_setters
+    - always_require_non_null_named_parameters
+    - prefer_double_quotes
+    - always_put_control_body_on_new_line
+    - void_returning_null
+    - exhaustive_cases
+    - only_throw_errors
+    - valid_regexps
+    # pub rules
+    - package_names
+    - sort_pub_dependencies
+

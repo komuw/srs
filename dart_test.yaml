@@ -1,0 +1,5 @@
+verbose_trace: false
+js_trace: false
+
+tags:
+  unit_test:
