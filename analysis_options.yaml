@@ -29,7 +29,7 @@ linter:
     - always_require_non_null_named_parameters
     - prefer_double_quotes
     - always_put_control_body_on_new_line
-    - void_returning_null
+    - avoid_returning_null
     - exhaustive_cases
     - only_throw_errors
     - valid_regexps
