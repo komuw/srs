@@ -35,5 +35,5 @@ t:
         --no-implicit-dynamic \
         --fatal-warnings \
         --enable-experiment=non-nullable .
-	@printf "\n run tests::\n" && pub run test .
+	@printf "\n run tests::\n" && pub run --enable-experiment=non-nullable test .
 
