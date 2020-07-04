@@ -1,3 +1,12 @@
+# The incantation of flags and env variables needed to support NNBD
+# may change(in form, name & whatever) in the future.
+# Also, once NNBD is released in a stable version, we'll no longer need the incantations
+#
+# 1. https://github.com/dart-lang/sdk/issues/42465
+# 2. https://github.com/dart-lang/sdk/issues/41853
+# 3. https://github.com/dart-lang/pub/pull/2542
+
+
 get:
 	@export DART_VM_OPTIONS='--enable-experiment=non-nullable, --no-null-safety' && \
         printf "\n dart format::\n" && \
