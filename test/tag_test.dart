@@ -13,7 +13,12 @@ void test_tag() {
 
   var defaultTags = srs.generateDefaultTags();
 
-  print("defaultTags:: $defaultTags");
+  List<String> _tags = [];
+  var r = defaultTags.iterator;
+  while (r.moveNext()) {
+    _tags.add(r.current.name);
+  }
+  tester.expect(_tags, tester.equals(["all", "year2020"]));
 }
 
 void main() {
