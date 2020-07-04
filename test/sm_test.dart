@@ -45,8 +45,6 @@ void test_srs_algorithm() {
   };
 
   test_table_happy.forEach((key, value) {
-    var v = srs.sm2(key);
-    print("key: $key  :: $v");
     tester.expect(srs.sm2(key), tester.equals(value));
   });
 
