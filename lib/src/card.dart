@@ -1,6 +1,7 @@
 import "dart:math" as math;
 import "./sm.dart" as sm;
 import "./tag.dart" as tag;
+import "package:intl/intl.dart" as intl;
 
 class Card {
   String question;
@@ -16,7 +17,7 @@ class Card {
   late Set<tag.Tag> tags;
 
   Card(this.question, this.answer, tag.Tag t) {
-    var now = DateTime.now().toUtc();
+    var now = getNow();
 
     createdAt = now;
     updatedAt = now;
@@ -26,6 +27,16 @@ class Card {
 
     tags = tag.generateDefaultTags();
     tags.add(t);
+  }
+
+  /// We only care about dates only without time part.
+  /// If a card is due for revision today, we should be able to review it at any time of the day.
+  DateTime getNow() {
+    var now = DateTime.now().toUtc();
+    // date only with no time component
+    var dateFmt = intl.DateFormat("yyyy-MM-dd");
+    var formattedNow = dateFmt.format(now);
+    return DateTime.parse(formattedNow);
   }
 
   @override
