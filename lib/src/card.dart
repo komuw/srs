@@ -36,7 +36,8 @@ class Card {
     // date only with no time component
     var dateFmt = intl.DateFormat("yyyy-MM-dd");
     var formattedNow = dateFmt.format(now);
-    return DateTime.parse(formattedNow);
+    var _formattedNow = formattedNow + " 00:00:00.000Z";
+    return DateTime.parse(_formattedNow).toUtc();
   }
 
   @override
