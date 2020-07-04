@@ -1,6 +1,8 @@
 import "dart:math" as math;
 
-enum Rating { Hardest, Hard, Medium, Easy, Easiest }
+// The original sm2 algo has 6 ratings. I have wittled them down to 3.
+// https://gist.github.com/doctorpangloss/13ab29abd087dc1927475e560f876797
+enum Rating { Hard, Medium, Easy }
 
 num sm2(List<Rating> historyOfRatings) {
   /*
@@ -24,10 +26,10 @@ num sm2(List<Rating> historyOfRatings) {
   const double d = 0.02;
   const double theta = 0.2;
 
-  // TODO: if item>5 set it to 5. if less than 0, set it to 0
+  // TODO: if item>2 set it to 2. if less than 0, set it to 0
   historyOfRatings.forEach((item) {
-    if (item.index > 5) {
-      throw AssertionError("item; `$item` should not be greater than 5");
+    if (item.index > 2) {
+      throw AssertionError("item; `$item` should not be greater than 2");
     }
     if (item.index < 0) {
       throw AssertionError("item; `$item` should not be less than 0");
@@ -36,7 +38,7 @@ num sm2(List<Rating> historyOfRatings) {
 
   List<bool> correct_x = [false];
   historyOfRatings.forEach((item) {
-    if (item.index >= 3) {
+    if (item.index >= 1) {
       correct_x.add(true);
     } else {
       correct_x.add(false);
@@ -59,7 +61,11 @@ num sm2(List<Rating> historyOfRatings) {
 
   List<double> _temp = [0.00];
   historyOfRatings.forEach((i) {
-    _temp.add(b + c * i.index + d * i.index * i.index);
+    // since original algorithm had 6 states; this was originally `_temp.add(b + c * i.index + d * i.index * i.index)`
+    // however, we have to extrapolate our 3 states to look like 6. so we add a multiplier.
+    // the original highest state was 5(zero indexed), our highest is 2. so multiplier is 5/2
+    var _multiplier = i.index * 2.00;
+    _temp.add(b + c * _multiplier + d * _multiplier * _multiplier);
   });
   _temp.removeAt(0);
 
@@ -75,9 +81,9 @@ num sm2(List<Rating> historyOfRatings) {
 
 void main() {
   var x = [
-    Rating.Easiest,
-    Rating.Easiest,
-    Rating.Easiest,
+    Rating.Easy,
+    Rating.Easy,
+    Rating.Easy,
   ];
   num res = sm2(x);
   print("res: ${res}");

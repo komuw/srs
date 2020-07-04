@@ -7,39 +7,46 @@ dart format .; pub run test .
 
 void test_srs_algorithm() {
   const test_table_happy = {
-    [srs.Rating.Easiest, srs.Rating.Easiest, srs.Rating.Easiest]: 17.226936248077187,
-    [
-      srs.Rating.Easiest,
-      srs.Rating.Easiest,
-      srs.Rating.Easiest,
-      srs.Rating.Easiest,
-      srs.Rating.Easiest,
-      srs.Rating.Easiest
-    ]: 84.91822762093749,
-    [srs.Rating.Hardest, srs.Rating.Hard, srs.Rating.Medium, srs.Rating.Hardest]: 1.0,
-    [srs.Rating.Hardest]: 1.0,
-    [srs.Rating.Hard]: 1.0,
+    //easies
+    [srs.Rating.Easy]: 7.5428796775927704,
+    [srs.Rating.Easy, srs.Rating.Easy]: 10.212873916030444,
+    [srs.Rating.Easy, srs.Rating.Easy, srs.Rating.Easy]: 14.635400517690599,
     [
       srs.Rating.Easy,
       srs.Rating.Easy,
       srs.Rating.Easy,
       srs.Rating.Easy,
       srs.Rating.Easy,
-      srs.Rating.Easy,
+      srs.Rating.Easy
     ]: 55.03745708646038,
+
+    //mediums
+    [srs.Rating.Medium]: 7.112043787939134,
+    [srs.Rating.Medium, srs.Rating.Medium]: 8.194714882493026,
+
+    //hards
+    [srs.Rating.Hard]: 1.0,
+    [srs.Rating.Hard, srs.Rating.Hard]: 1.0,
+    [srs.Rating.Hard, srs.Rating.Hard, srs.Rating.Hard, srs.Rating.Hard]: 1.0,
+
+    // easy ending in hard
+    [srs.Rating.Easy, srs.Rating.Easy, srs.Rating.Easy, srs.Rating.Hard]: 1.0,
     [
       srs.Rating.Easy,
       srs.Rating.Easy,
       srs.Rating.Easy,
+      srs.Rating.Hard,
       srs.Rating.Easy,
-      srs.Rating.Easy,
-      srs.Rating.Easy,
-      srs.Rating.Hard
-    ]: 1.0,
-    [srs.Rating.Medium, srs.Rating.Medium, srs.Rating.Medium, srs.Rating.Medium]: 15.895881282351272
+    ]: 19.128412543706776,
+
+    //hard ending in easy
+    [srs.Rating.Hard, srs.Rating.Hard, srs.Rating.Hard, srs.Rating.Easy]: 6.323243712370701,
+    [srs.Rating.Hard, srs.Rating.Hard, srs.Rating.Hard, srs.Rating.Medium]: 6.323243712370701,
   };
 
   test_table_happy.forEach((key, value) {
+    var v = srs.sm2(key);
+    print("key: $key  :: $v");
     tester.expect(srs.sm2(key), tester.equals(value));
   });
 

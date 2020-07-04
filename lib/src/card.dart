@@ -22,7 +22,7 @@ class Card {
     updatedAt = now;
     nextReviewDate = now.add(Duration(days: 1));
 
-    historyOfRatings = [sm.Rating.Hardest];
+    historyOfRatings = [sm.Rating.Hard];
 
     tags = tag.generateDefaultTags();
     tags.add(t);
