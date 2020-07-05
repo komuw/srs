@@ -4,17 +4,17 @@ import "./tag.dart" as tag;
 import "package:intl/intl.dart" as intl;
 
 class Card {
-  String question;
-  String answer;
+  final String question;
+  final String answer;
 
   // all the datetimes should be in UTC
-  late DateTime createdAt;
-  late DateTime updatedAt;
-  late DateTime nextReviewDate;
+  late final DateTime createdAt;
+  late final DateTime updatedAt;
+  late final DateTime nextReviewDate;
 
-  int maxRatings = 50; // only keep the last 50 ratings
-  late List<sm.Rating> historyOfRatings;
-  late Set<tag.Tag> tags;
+  static final int maxRatings = 50; // only keep the last 50 ratings
+  late final List<sm.Rating> historyOfRatings;
+  late final Set<tag.Tag> tags;
 
   Card(this.question, this.answer, tag.Tag t) {
     var now = getNow();

@@ -2,12 +2,12 @@ import "dart:math" as math;
 import "./exceptions.dart" as e;
 
 class Tag {
-  String name;
-  String description;
+  final String name;
+  final String description;
 
   // all the datetimes should be in UTC
-  late DateTime createdAt;
-  late DateTime updatedAt;
+  late final DateTime createdAt;
+  late final DateTime updatedAt;
 
   Tag(this.name, this.description) {
     if (name.contains(" ")) {
