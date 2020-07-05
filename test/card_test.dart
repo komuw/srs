@@ -28,7 +28,20 @@ void test_card_tags() {
   tester.expect(_tags, tester.equals(["all", "year2020", "cs"]));
 }
 
+void test_card_update() {
+  var c = srs.Card(
+      "Why is it called the dead sea?",
+      "Almost nothing lives in it, because its versy salty.",
+      srs.Tag("geography", "general knowledge about geography."));
+
+  print("c.nextReviewDate:: ${c.nextReviewDate}");
+  c.update(srs.Rating.Hard);
+  print("c.nextReviewDate after hard:: ${c.nextReviewDate}");
+}
+
 void main() {
   tester.test("test card creation", test_card_creation, tags: "unit_test");
   tester.test("test card tags", test_card_tags, tags: "unit_test");
+
+  tester.test("test card update", test_card_update, tags: "unit_test");
 }
