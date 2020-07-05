@@ -13,7 +13,7 @@ class Card {
   late DateTime nextReviewDate;
 
   static final int maxRatings = 50; // only keep the last 50 ratings
-  late final List<sm.Rating> historyOfRatings;
+  List<sm.Rating> historyOfRatings = [];
   late final Set<tag.Tag> tags;
 
   Card(this.question, this.answer, tag.Tag t) {
@@ -22,8 +22,6 @@ class Card {
     createdAt = now;
     updatedAt = now;
     nextReviewDate = now.add(Duration(days: 1));
-
-    historyOfRatings = [sm.Rating.Hard];
 
     tags = tag.generateDefaultTags();
     tags.add(t);

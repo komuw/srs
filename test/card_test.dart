@@ -41,6 +41,8 @@ void test_card_update() {
   c.update(srs.Rating.Easy);
   c.update(srs.Rating.Easy);
 
+  print("historyOfRatings: ${c.historyOfRatings}");
+
   print("c.nextReviewDate after 2 easies:: ${c.nextReviewDate}");
 }
 
