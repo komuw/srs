@@ -1,4 +1,3 @@
-import "dart:developer";
 import "dart:math" as math;
 import "./sm.dart" as sm;
 import "./tag.dart" as tag;
@@ -52,7 +51,7 @@ class Card {
   void update(sm.Rating r) {
     historyOfRatings.add(r);
     var days2NextReview = sm.sm2(historyOfRatings);
-    nextReviewDate = nextReviewDate.add(Duration(days: days2NextReview.toInt() ));
+    nextReviewDate = nextReviewDate.add(Duration(days: days2NextReview.toInt()));
 
     var numRatings = historyOfRatings.length;
     if (numRatings > maxRatings) {
@@ -60,4 +59,3 @@ class Card {
     }
   }
 }
-
