@@ -31,7 +31,7 @@ void test_card_tags() {
 void test_card_update() {
   var c = srs.Card(
       "Why is it called the dead sea?",
-      "Almost nothing lives in it, because its versy salty.",
+      "Almost nothing lives in it, because its very salty.",
       srs.Tag("geography", "general knowledge about geography."));
   var now = c.createdAt;
   tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 1)));
