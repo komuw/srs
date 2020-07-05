@@ -35,13 +35,18 @@ void test_card_update() {
       srs.Tag("geography", "general knowledge about geography."));
 
   print("c.nextReviewDate:: ${c.nextReviewDate}");
-  c.update(srs.Rating.Hard);
-  print("c.nextReviewDate after hard:: ${c.nextReviewDate}");
+  // c.update(srs.Rating.Hard);
+  // print("c.nextReviewDate after hard:: ${c.nextReviewDate}");
+
+  c.update(srs.Rating.Easy);
+  c.update(srs.Rating.Easy);
+
+  print("c.nextReviewDate after 2 easies:: ${c.nextReviewDate}");
 }
 
 void main() {
   tester.test("test card creation", test_card_creation, tags: "unit_test");
   tester.test("test card tags", test_card_tags, tags: "unit_test");
 
-  tester.test("test card update", test_card_update, tags: "unit_test");
+  // tester.test("test card update", test_card_update, tags: "unit_test");
 }
