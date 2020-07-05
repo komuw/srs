@@ -6,20 +6,19 @@ dart format .; pub run test .
  */
 
 void test_card_creation() {
-  var c = srs.Card("name?", "My name is Kapombe.",
-      srs.Tag("cs", "computer science general knowledge"));
+  var c =
+      srs.Card("name?", "My name is Kapombe.", srs.Tag("cs", "computer science general knowledge"));
 
   tester.expect(c.createdAt.isUtc, tester.equals(true));
   tester.expect(c.updatedAt.isUtc, tester.equals(true));
   tester.expect(c.nextReviewDate.isUtc, tester.equals(true));
 
-  tester.expect(c.nextReviewDate.difference(c.createdAt),
-      tester.equals(Duration(days: 1)));
+  tester.expect(c.nextReviewDate.difference(c.createdAt), tester.equals(Duration(days: 1)));
 }
 
 void test_card_tags() {
-  var c = srs.Card("name?", "My name is Kapombe.",
-      srs.Tag("cs", "computer science general knowledge"));
+  var c =
+      srs.Card("name?", "My name is Kapombe.", srs.Tag("cs", "computer science general knowledge"));
 
   List<String> _tags = [];
   var r = c.tags.iterator;
@@ -35,28 +34,29 @@ void test_card_update() {
       "Almost nothing lives in it, because its versy salty.",
       srs.Tag("geography", "general knowledge about geography."));
   var now = c.createdAt;
-  tester.expect(
-      c.nextReviewDate.difference(now), tester.equals(Duration(days: 1)));
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 1)));
 
   c.update(srs.Rating.Easy);
-  tester.expect(
-      c.nextReviewDate.difference(now), tester.equals(Duration(days: 8)));
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 8)));
 
   c.update(srs.Rating.Easy);
-  tester.expect(
-      c.nextReviewDate.difference(now), tester.equals(Duration(days: 18)));
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 18)));
 
   c.update(srs.Rating.Hard);
-  tester.expect(
-      c.nextReviewDate.difference(now), tester.equals(Duration(days: 19)));
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 19)));
 
   c.update(srs.Rating.Easy);
-  tester.expect(
-      c.nextReviewDate.difference(now), tester.equals(Duration(days: 31)));
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 31)));
 
   c.update(srs.Rating.Easy);
-  tester.expect(
-      c.nextReviewDate.difference(now), tester.equals(Duration(days: 50)));
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 50)));
+
+//try and update beyond `Card.maxRatings`
+  for (var i = 0; i < srs.Card.maxRatings * 3; i++) {
+    c.update(srs.Rating.Easy);
+  }
+  var diff = c.nextReviewDate.difference(now);
+  print("diff: $diff , diffdays: ${diff.inDays}");
 }
 
 void main() {
