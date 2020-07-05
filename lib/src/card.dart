@@ -10,7 +10,7 @@ class Card {
   // all the datetimes should be in UTC
   late final DateTime createdAt;
   late final DateTime updatedAt;
-  late final DateTime nextReviewDate;
+  late DateTime nextReviewDate;
 
   static final int maxRatings = 50; // only keep the last 50 ratings
   late final List<sm.Rating> historyOfRatings;

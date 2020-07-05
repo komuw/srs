@@ -48,5 +48,5 @@ void main() {
   tester.test("test card creation", test_card_creation, tags: "unit_test");
   tester.test("test card tags", test_card_tags, tags: "unit_test");
 
-  // tester.test("test card update", test_card_update, tags: "unit_test");
+  tester.test("test card update", test_card_update, tags: "unit_test");
 }
