@@ -55,8 +55,7 @@ void test_card_update() {
   for (var i = 0; i < srs.Card.maxRatings * 3; i++) {
     c.update(srs.Rating.Easy);
   }
-  var diff = c.nextReviewDate.difference(now);
-  print("diff: $diff , diffdays: ${diff.inDays}");
+  tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 97845)));
 }
 
 void main() {

@@ -12,7 +12,10 @@ class Card {
   late final DateTime updatedAt;
   late DateTime nextReviewDate;
 
-  static final int maxRatings = 50; // only keep the last 50 ratings
+  static final int maxRatings = 20; // only keep the last 50 ratings
+  static final int longestNextReviewInterval =
+      365 * 5; // card cant go longer than 5 years without review.
+
   List<sm.Rating> historyOfRatings = [];
   late final Set<tag.Tag> tags;
 
@@ -49,7 +52,14 @@ class Card {
   void update(sm.Rating r) {
     historyOfRatings.add(r);
     var days2NextReview = sm.sm2(historyOfRatings);
-    nextReviewDate = nextReviewDate.add(Duration(days: days2NextReview.toInt()));
+    var days2NextReviewInt = days2NextReview.toInt();
+
+    if (days2NextReviewInt > longestNextReviewInterval) {
+      // we do not want to go long before reviewing cards.
+      // also prevents, `DateTime is outside valid range` error.
+      days2NextReviewInt = longestNextReviewInterval;
+    }
+    nextReviewDate = nextReviewDate.add(Duration(days: days2NextReviewInt));
 
     var numRatings = historyOfRatings.length;
     if (numRatings > maxRatings) {
