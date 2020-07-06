@@ -33,15 +33,13 @@ void main() {
   {
     // Create Tags.
     TagNameInput = html.querySelector("#tagName") as html.InputElement;
-    TagDescriptionInput =
-        html.querySelector("#tagDescription") as html.InputElement;
+    TagDescriptionInput = html.querySelector("#tagDescription") as html.InputElement;
     TagDescriptionInput.onChange.listen(addTags);
   }
 
   {
     //Create Cards.
-    CardQuestionInput =
-        html.querySelector("#cardQuestion") as html.InputElement;
+    CardQuestionInput = html.querySelector("#cardQuestion") as html.InputElement;
     CardTagSelect = html.querySelector("#cardTag") as html.SelectElement;
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardAnswerText.onChange.listen(addCards);
