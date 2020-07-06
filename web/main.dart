@@ -1,4 +1,5 @@
 import "dart:html" as html;
+import "package:srs/srs.dart" as srs;
 
 /*
 webdev serve \
@@ -14,4 +15,7 @@ void main() {
   html.DivElement div = html.querySelector("#app") as html.DivElement;
   print("p.type: ${div.runtimeType}");
   div.text = "New app text, via Dartlang!";
+
+  var defaultTags = srs.generateDefaultTags();
+  print("defaultTags: ${defaultTags}");
 }
