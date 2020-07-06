@@ -16,9 +16,9 @@ late html.DivElement MainDiv;
 late html.InputElement TagNameInput;
 late html.InputElement TagDescriptionInput;
 
+var AllTags = srs.generateDefaultTags();
+
 void main() {
-  var defaultTags = srs.generateDefaultTags();
-  print("defaultTags: ${defaultTags}");
   MainDiv = html.querySelector("#app") as html.DivElement;
 
   // html.ButtonElement AddTagsButton =
@@ -29,19 +29,12 @@ void main() {
   TagNameInput = html.querySelector("#tagName") as html.InputElement;
   TagDescriptionInput =
       html.querySelector("#tagDescription") as html.InputElement;
-
   TagDescriptionInput.onChange.listen(addTags);
 }
 
 void addTags(html.Event e) {
-  print("addTags func called.");
-  print("with event: $e");
+  var t = srs.Tag(TagNameInput.value, TagDescriptionInput.value);
+  AllTags.add(t);
 
-  var tName = TagNameInput.value;
-  var tDescription = TagDescriptionInput.value;
-
-  print("tName: $tName , tDescription: $tDescription");
-  var t = srs.Tag(tName, tDescription);
-
-  print("new Tag created: $t");
+  print("""{"event": "addTags", "Tag": $t}""");
 }
