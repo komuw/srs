@@ -17,7 +17,7 @@ late html.InputElement TagNameInput;
 late html.InputElement TagDescriptionInput;
 
 late html.InputElement CardQuestionInput;
-late html.InputElement CardTagInput;
+late html.SelectElement CardTagSelect;
 late html.TextAreaElement CardAnswerText;
 
 var AllTags = srs.generateDefaultTags();
@@ -42,8 +42,7 @@ void main() {
     //Create Cards.
     CardQuestionInput =
         html.querySelector("#cardQuestion") as html.InputElement;
-    // TODO: card tags should be a dropdown selection.
-    CardTagInput = html.querySelector("#cardTag") as html.InputElement;
+    CardTagSelect = html.querySelector("#cardTag") as html.SelectElement;
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardAnswerText.onChange.listen(addCards);
   }
@@ -58,7 +57,12 @@ void addTags(html.Event e) {
 
 void addCards(html.Event e) {
   print(
-      "card Q: ${CardQuestionInput.value} card A: ${CardAnswerText.value} card Tag: ${CardTagInput}  ");
+      "card Q: ${CardQuestionInput.value} card A: ${CardAnswerText.value} card Tag: ${CardTagSelect.selectedOptions}  ");
+
+  var _selected_tags = CardTagSelect.selectedOptions;
+  _selected_tags.forEach((i) {
+    print("select: ${i.value}");
+  });
   // var c = srs.Card("name?", "My name is Kapombe.",
   //     srs.Tag("cs", "computer science general knowledge"));
   // print("""{"event": "addCards", "Card": $c}""");
