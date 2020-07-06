@@ -7,6 +7,7 @@ targets:
         - test/**.browser_test.dart
         - web/**.dart
         options:
+          # NB: I havent found a way to use NNBD with dartdevc
           # compiler: dartdevc
           # # List any dartdevc specific args here, or omit it.
           # ddc_args:
