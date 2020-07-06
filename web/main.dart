@@ -1,4 +1,4 @@
-import "dart:html";
+import "dart:html" as html;
 
 /*
 webdev serve \
@@ -11,5 +11,5 @@ webdev serve \
 # --release
 */
 void main() {
-  querySelector("#RipVanWinkle")?.text = "Wake up, sleepy head!";
+  html.querySelector("#RipVanWinkle")?.text = "Wake up, sleepy head!";
 }
