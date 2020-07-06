@@ -26,10 +26,12 @@ void main() {
   // print("AddTagsButton.type: ${AddTagsButton.runtimeType}");
   // AddTagsButton.onClick.listen(addTags);
 
-  TagNameInput = html.querySelector("#tagName") as html.InputElement;
-  TagDescriptionInput =
-      html.querySelector("#tagDescription") as html.InputElement;
-  TagDescriptionInput.onChange.listen(addTags);
+  {
+    // Create Tags.
+    TagNameInput = html.querySelector("#tagName") as html.InputElement;
+    TagDescriptionInput = html.querySelector("#tagDescription") as html.InputElement;
+    TagDescriptionInput.onChange.listen(addTags);
+  }
 }
 
 void addTags(html.Event e) {
