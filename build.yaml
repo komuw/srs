@@ -7,6 +7,12 @@ targets:
         - test/**.browser_test.dart
         - web/**.dart
         options:
+          # compiler: dartdevc
+          # # List any dartdevc specific args here, or omit it.
+          # ddc_args:
+          # - --enable-experiment=non-nullable 
+          # - --no-sound-null-safety
+
           compiler: dart2js
           # List any dart2js specific args here, or omit it.
           dart2js_args:
