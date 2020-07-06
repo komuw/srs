@@ -18,5 +18,3 @@ dev_dependencies:
   # pub global activate webdev
   build_runner: '>=1.6.2'
   build_web_compilers: '>=2.0.0'
-  # webdev serve --debug --debug-extension --log-requests web:8080
-

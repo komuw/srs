@@ -28,6 +28,7 @@ debug
 .dart_tool/
 .packages
 build/
+output/
 
 #Coverage
 .coverage
