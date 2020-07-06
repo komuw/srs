@@ -11,5 +11,7 @@ webdev serve \
 # --release
 */
 void main() {
-  html.querySelector("#RipVanWinkle")?.text = "Wake up, sleepy head!";
+  html.ParagraphElement p =
+      html.querySelector("#RipVanWinkle") as html.ParagraphElement;
+  p.text = "Wake up, sleepy head!";
 }
