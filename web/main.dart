@@ -11,7 +11,7 @@ webdev serve \
 # --release
 */
 void main() {
-  html.ParagraphElement p =
-      html.querySelector("#RipVanWinkle") as html.ParagraphElement;
-  p.text = "Wake up, sleepy head!";
+  html.DivElement div = html.querySelector("#app") as html.DivElement;
+  print("p.type: ${div.runtimeType}");
+  div.text = "New app text, via Dartlang!";
 }
