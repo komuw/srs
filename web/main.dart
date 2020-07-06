@@ -45,12 +45,14 @@ void main() {
     CardTagSelect = html.querySelector("#cardTag") as html.SelectElement;
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardAnswerText.onChange.listen(addCards);
+    populateTags();
   }
 }
 
 void addTags(html.Event e) {
   var t = srs.Tag(TagNameInput.value, TagDescriptionInput.value);
   AllTags.add(t);
+  populateTags();
 
   print("""{"event": "addTags", "Tag": $t}""");
 }
@@ -66,4 +68,15 @@ void addCards(html.Event e) {
   // var c = srs.Card("name?", "My name is Kapombe.",
   //     srs.Tag("cs", "computer science general knowledge"));
   // print("""{"event": "addCards", "Card": $c}""");
+}
+
+void populateTags() {
+  AllTags.forEach((i) {
+    var newTagOpt = html.OptionElement();
+    newTagOpt.value = i.name;
+    newTagOpt.text = i.name;
+
+    //TODO: find a way to dedupe.
+    CardTagSelect.children.add(newTagOpt);
+  });
 }
