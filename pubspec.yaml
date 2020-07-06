@@ -14,3 +14,9 @@ dependencies:
 dev_dependencies:
   test: '>=1.15.1'
   pedantic: '>1.0.0'
+  # needed by https://pub.dev/packages/webdev
+  # pub global activate webdev
+  build_runner: '>=1.6.2'
+  build_web_compilers: '>=2.0.0'
+  # webdev serve --debug --debug-extension --log-requests web:8080
+
