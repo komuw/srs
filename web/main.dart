@@ -114,6 +114,15 @@ void reviewCards(html.Event e) {
 
   populateTags();
   print("""{"event": "reviewCards" "Cards2Review": $Cards2Review}""");
+  renderCardsForReview(Cards2Review);
+}
+
+void renderCardsForReview(List<srs.Card> cards) {
+  cards.forEach((c) {
+    var p = html.ParagraphElement();
+    p.text = c.question;
+    MainDiv.children.add(p);
+  });
 }
 
 void populateTags() {
