@@ -67,7 +67,6 @@ void addCards(html.Event e) {
   List<srs.Tag> _tags = [];
   var _selected_tags = CardTagSelect.selectedOptions;
   _selected_tags.forEach((i) {
-    print("select: ${i.value}");
     _tags.add(srs.Tag(i.value, "some stuff"));
   });
 
@@ -81,6 +80,7 @@ void addCards(html.Event e) {
 
 void populateTags() {
   CardTagSelect.children = [];
+  CardTagSelect.size = AllTags.length + 1;
   AllTags.forEach((i) {
     var newTagOpt = html.OptionElement();
     newTagOpt.value = i.name;
