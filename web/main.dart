@@ -19,7 +19,7 @@ late html.InputElement TagDescriptionInput;
 late html.ButtonElement TagButton;
 
 late html.InputElement CardQuestionInput;
-late html.SelectElement CardTagSelect;
+late html.SelectElement AddCardTagSelect;
 late html.TextAreaElement CardAnswerText;
 late html.ButtonElement CardButton;
 
@@ -44,7 +44,7 @@ void main() {
   {
     //Create Cards.
     CardQuestionInput = html.querySelector("#cardQuestion") as html.InputElement;
-    CardTagSelect = html.querySelector("#cardTag") as html.SelectElement;
+    AddCardTagSelect = html.querySelector("#addCardTags") as html.SelectElement;
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardButton = html.querySelector("#buttonAddCards") as html.ButtonElement;
     CardButton.onClick.listen(addCards);
@@ -65,7 +65,7 @@ void addTags(html.Event e) {
 
 void addCards(html.Event e) {
   List<srs.Tag> _tags = [];
-  var _selected_tags = CardTagSelect.selectedOptions;
+  var _selected_tags = AddCardTagSelect.selectedOptions;
   _selected_tags.forEach((i) {
     _tags.add(srs.Tag(i.value, "some stuff"));
   });
@@ -79,12 +79,12 @@ void addCards(html.Event e) {
 }
 
 void populateTags() {
-  CardTagSelect.children = [];
-  CardTagSelect.size = AllTags.length + 1;
+  AddCardTagSelect.children = [];
+  AddCardTagSelect.size = AllTags.length + 1;
   AllTags.forEach((i) {
     var newTagOpt = html.OptionElement();
     newTagOpt.value = i.name;
     newTagOpt.text = i.name;
-    CardTagSelect.children.add(newTagOpt);
+    AddCardTagSelect.children.add(newTagOpt);
   });
 }

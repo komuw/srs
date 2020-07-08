@@ -36,9 +36,11 @@
 
 <body>
     <div class="container">
+
         <div class="header">
             some header.
         </div>
+
         <div class="left-sidebar">
             <h2>Add Tags:</h2>
             <input id="tagName" type="text" placeholder="Tag Name">
@@ -54,7 +56,7 @@
             <h2>Add Cards:</h2>
             <input id="cardQuestion" type="text" placeholder="question">
             <br/><br/>
-            <select id="cardTag" multiple >
+            <select id="addCardTags" multiple >
                 <!-- will be populated with options at startup and also whenever a new tag is added -->
             </select>
             <br/><br/>
@@ -63,24 +65,16 @@
             <button id="buttonAddCards" class="someClass" type="button" name="add cards">
                 Add Cards.
             </button>
-
         </div>
+
         <div class="right-sidebar">
         </div>
 
         <div class="main">
-            <br/>  
-
-            <div id="app">
-                Some app text.
-                <br/><br/>
-                <br/><br/>
-
-            </div>
-
-            <br/>
-            <br/>okay
-            <br/>
+            <h2>Review Cards:</h2>
+            <select id="cardTag" multiple >
+                <!-- will be populated with options at startup and also whenever a new tag is added -->
+            </select>
         </div>
 
     </div>
