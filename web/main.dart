@@ -74,14 +74,13 @@ void addCards(html.Event e) {
   var c = srs.Card(CardQuestionInput.value, CardAnswerText.value, _tags);
   CardQuestionInput.value = "";
   CardAnswerText.value = "";
-  CardTagSelect.children = [];
 
-  // print("""{"event": "addCards", "Card": $c}""");
   populateTags();
   print("""{"event": "addCards", "Card": $c}""");
 }
 
 void populateTags() {
+  CardTagSelect.children = [];
   AllTags.forEach((i) {
     var newTagOpt = html.OptionElement();
     newTagOpt.value = i.name;
