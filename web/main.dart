@@ -24,6 +24,7 @@ late html.TextAreaElement CardAnswerText;
 late html.ButtonElement CardButton;
 
 late html.DivElement ReviewCardTagDiv;
+late html.ButtonElement ReviewCardsButton;
 
 var AllTags = srs.generateDefaultTags();
 
@@ -50,6 +51,8 @@ void main() {
   {
     //Review Cards.
     ReviewCardTagDiv = html.querySelector("#reviewCardTags") as html.DivElement;
+    ReviewCardsButton = html.querySelector("#buttonReviewCards") as html.ButtonElement;
+    ReviewCardsButton.onClick.listen(reviewCards);
   }
 
   // we need to call populateTags here so that html page can be populated with tags at startup
@@ -79,6 +82,24 @@ void addCards(html.Event e) {
 
   populateTags();
   print("""{"event": "addCards", "Card": $c}""");
+}
+
+void reviewCards(html.Event e) {
+  List<html.CheckboxInputElement> _selectedTags = [];
+  ReviewCardTagDiv.children.forEach((el) {
+    if (el is html.CheckboxInputElement) {
+      if (el.checked) {
+        _selectedTags.add(el);
+      }
+    }
+  });
+
+  _selectedTags.forEach((el) {
+    print("selected Tag: ${el.value}");
+  });
+
+  populateTags();
+  print("""{"event": "reviewCards"}""");
 }
 
 void populateTags() {
