@@ -23,17 +23,12 @@ late html.SelectElement AddCardTagSelect;
 late html.TextAreaElement CardAnswerText;
 late html.ButtonElement CardButton;
 
-late html.SelectElement ReviewCardTagSelect;
+late html.DivElement ReviewCardTagDiv;
 
 var AllTags = srs.generateDefaultTags();
 
 void main() {
   MainDiv = html.querySelector("#app") as html.DivElement;
-
-  // html.ButtonElement AddTagsButton =
-  //     html.querySelector("#buttonAddTags") as html.ButtonElement;
-  // print("AddTagsButton.type: ${AddTagsButton.runtimeType}");
-  // AddTagsButton.onClick.listen(addTags);
 
   {
     // Create Tags.
@@ -54,7 +49,7 @@ void main() {
 
   {
     //Review Cards.
-    ReviewCardTagSelect = html.querySelector("#reviewCardTags") as html.SelectElement;
+    ReviewCardTagDiv = html.querySelector("#reviewCardTags") as html.DivElement;
   }
 
   // we need to call populateTags here so that html page can be populated with tags at startup
@@ -89,15 +84,27 @@ void addCards(html.Event e) {
 void populateTags() {
   AddCardTagSelect.children = [];
   AddCardTagSelect.size = AllTags.length + 1;
-
-  ReviewCardTagSelect.children = [];
-  ReviewCardTagSelect.size = AllTags.length + 1;
-
   AllTags.forEach((i) {
     var newTagOpt = html.OptionElement();
     newTagOpt.value = i.name;
     newTagOpt.text = i.name;
     AddCardTagSelect.children.add(newTagOpt);
-    ReviewCardTagSelect.children.add(newTagOpt);
+  });
+
+  ReviewCardTagDiv.children = [];
+  AllTags.forEach((i) {
+    var newCheckbox = html.CheckboxInputElement();
+    newCheckbox.name = i.name;
+    newCheckbox.text = i.name;
+    newCheckbox.value = i.name;
+    newCheckbox.id = i.name;
+
+    var label = html.LabelElement();
+    label.htmlFor = i.name;
+    label.text = i.name;
+
+    ReviewCardTagDiv.children.add(newCheckbox);
+    ReviewCardTagDiv.children.add(label);
+    ReviewCardTagDiv.children.add(html.BRElement());
   });
 }
