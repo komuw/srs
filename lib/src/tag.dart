@@ -25,6 +25,16 @@ class Tag {
 
     return "Tag(N:$_nSubst, D:$_dSubst)";
   }
+
+  @override
+  bool operator ==(other) {
+    return other is Tag && other.name == name;
+  }
+
+  @override
+  int get hashCode {
+    return name.hashCode;
+  }
 }
 
 /// The system will have some default tags.

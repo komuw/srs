@@ -14,6 +14,19 @@ void test_card_creation() {
   tester.expect(c.nextReviewDate.isUtc, tester.equals(true));
 
   tester.expect(c.nextReviewDate.difference(c.createdAt), tester.equals(Duration(days: 1)));
+
+  var c2 = srs.Card("q?", "a", [
+    // tags with same name are treated as same Tag
+    srs.Tag("cs", "aa"),
+    srs.Tag("algo", "1141"),
+    srs.Tag("cs", "xyz"),
+    srs.Tag("cs", "3akskq"),
+    srs.Tag("cs", "3akskq"),
+    srs.Tag("cs", "3akskq"),
+    srs.Tag("cs", "3akskq")
+  ]);
+  // expected is 4 because by default we Card automatically adds `generateDefaultTags`
+  tester.expect(c2.tags.length, tester.equals(4));
 }
 
 void test_card_tags() {

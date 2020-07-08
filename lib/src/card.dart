@@ -17,7 +17,7 @@ class Card {
       365 * 5; // card cant go longer than 5 years without review.
 
   List<sm.Rating> historyOfRatings = [];
-  late final Set<tag.Tag> tags;
+  Set<tag.Tag> tags = {};
 
   Card(this.question, this.answer, List<tag.Tag> t) {
     var now = getNow();
