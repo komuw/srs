@@ -27,6 +27,7 @@ late html.DivElement ReviewCardTagDiv;
 late html.ButtonElement ReviewCardsButton;
 
 var AllTags = srs.generateDefaultTags();
+List<srs.Card> AllCards = [];
 
 void main() {
   MainDiv = html.querySelector("#app") as html.DivElement;
@@ -77,6 +78,7 @@ void addCards(html.Event e) {
   });
 
   var c = srs.Card(CardQuestionInput.value, CardAnswerText.value, _tags);
+  AllCards.add(c);
   CardQuestionInput.value = "";
   CardAnswerText.value = "";
 
@@ -85,21 +87,32 @@ void addCards(html.Event e) {
 }
 
 void reviewCards(html.Event e) {
-  List<html.CheckboxInputElement> _selectedTags = [];
+  List<String> _selectedTags = [];
   ReviewCardTagDiv.children.forEach((el) {
     if (el is html.CheckboxInputElement) {
       if (el.checked) {
-        _selectedTags.add(el);
+        _selectedTags.add(el.value);
       }
     }
   });
 
   _selectedTags.forEach((el) {
-    print("selected Tag: ${el.value}");
+    print("selected Tag: ${el}");
+  });
+
+  List<srs.Card> Cards2Review = [];
+  AllCards.forEach((aC) {
+    _selectedTags.forEach((st) {
+      aC.tags.forEach((acT) {
+        if (acT.name == st) {
+          Cards2Review.add(aC);
+        }
+      });
+    });
   });
 
   populateTags();
-  print("""{"event": "reviewCards"}""");
+  print("""{"event": "reviewCards" "Cards2Review": $Cards2Review}""");
 }
 
 void populateTags() {
