@@ -85,8 +85,6 @@ void populateTags() {
     var newTagOpt = html.OptionElement();
     newTagOpt.value = i.name;
     newTagOpt.text = i.name;
-
-    //TODO: find a way to dedupe.
     CardTagSelect.children.add(newTagOpt);
   });
 }
