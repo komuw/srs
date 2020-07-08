@@ -102,6 +102,7 @@ void reviewCards(html.Event e) {
 
   List<srs.Card> Cards2Review = [];
   AllCards.forEach((aC) {
+    // TODO: this is too much complexity, simplify.
     _selectedTags.forEach((st) {
       aC.tags.forEach((acT) {
         if (acT.name == st) {
