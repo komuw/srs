@@ -19,7 +19,7 @@ class Card {
   List<sm.Rating> historyOfRatings = [];
   late final Set<tag.Tag> tags;
 
-  Card(this.question, this.answer, tag.Tag t) {
+  Card(this.question, this.answer, List<tag.Tag> t) {
     var now = getNow();
 
     createdAt = now;
@@ -27,7 +27,7 @@ class Card {
     nextReviewDate = now.add(Duration(days: 1));
 
     tags = tag.generateDefaultTags();
-    tags.add(t);
+    tags.addAll(t);
   }
 
   /// We only care about dates only without time part.

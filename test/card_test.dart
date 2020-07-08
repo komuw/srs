@@ -6,8 +6,8 @@ dart format .; pub run test .
  */
 
 void test_card_creation() {
-  var c =
-      srs.Card("name?", "My name is Kapombe.", srs.Tag("cs", "computer science general knowledge"));
+  var c = srs.Card(
+      "name?", "My name is Kapombe.", [srs.Tag("cs", "computer science general knowledge")]);
 
   tester.expect(c.createdAt.isUtc, tester.equals(true));
   tester.expect(c.updatedAt.isUtc, tester.equals(true));
@@ -17,8 +17,8 @@ void test_card_creation() {
 }
 
 void test_card_tags() {
-  var c =
-      srs.Card("name?", "My name is Kapombe.", srs.Tag("cs", "computer science general knowledge"));
+  var c = srs.Card(
+      "name?", "My name is Kapombe.", [srs.Tag("cs", "computer science general knowledge")]);
 
   List<String> _tags = [];
   var r = c.tags.iterator;
@@ -32,7 +32,7 @@ void test_card_update() {
   var c = srs.Card(
       "Why is it called the dead sea?",
       "Almost nothing lives in it, because its very salty.",
-      srs.Tag("geography", "general knowledge about geography."));
+      [srs.Tag("geography", "general knowledge about geography.")]);
   var now = c.createdAt;
   tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 1)));
 
