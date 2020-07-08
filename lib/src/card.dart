@@ -46,7 +46,11 @@ class Card {
     var _qSubst = question.substring(0, math.min(6, question.length));
     var _aSubst = answer.substring(0, math.min(6, answer.length));
 
-    return "Card(Q:$_qSubst, A:$_aSubst, next:${nextReviewDate.day}-${nextReviewDate.month}-${nextReviewDate.year})";
+    var _tagSting = "";
+    tags.forEach((i) {
+      _tagSting = _tagSting + i.name + ",";
+    });
+    return "Card(Q:$_qSubst, A:$_aSubst, next:${nextReviewDate.day}-${nextReviewDate.month}-${nextReviewDate.year}, tags:$_tagSting)";
   }
 
   void update(sm.Rating r) {

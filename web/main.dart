@@ -48,6 +48,8 @@ void main() {
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardButton = html.querySelector("#buttonAddCards") as html.ButtonElement;
     CardButton.onClick.listen(addCards);
+    // we need to call populateTags here so that html page can be populated with tags at startup
+    populateTags();
   }
 }
 
@@ -72,6 +74,7 @@ void addCards(html.Event e) {
   var c = srs.Card(CardQuestionInput.value, CardAnswerText.value, _tags);
   CardQuestionInput.value = "";
   CardAnswerText.value = "";
+  CardTagSelect.children = [];
 
   // print("""{"event": "addCards", "Card": $c}""");
   populateTags();
