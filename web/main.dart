@@ -23,6 +23,8 @@ late html.SelectElement AddCardTagSelect;
 late html.TextAreaElement CardAnswerText;
 late html.ButtonElement CardButton;
 
+late html.SelectElement ReviewCardTagSelect;
+
 var AllTags = srs.generateDefaultTags();
 
 void main() {
@@ -48,9 +50,15 @@ void main() {
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardButton = html.querySelector("#buttonAddCards") as html.ButtonElement;
     CardButton.onClick.listen(addCards);
-    // we need to call populateTags here so that html page can be populated with tags at startup
-    populateTags();
   }
+
+  {
+    //Review Cards.
+    ReviewCardTagSelect = html.querySelector("#reviewCardTags") as html.SelectElement;
+  }
+
+  // we need to call populateTags here so that html page can be populated with tags at startup
+  populateTags();
 }
 
 void addTags(html.Event e) {
@@ -81,10 +89,15 @@ void addCards(html.Event e) {
 void populateTags() {
   AddCardTagSelect.children = [];
   AddCardTagSelect.size = AllTags.length + 1;
+
+  ReviewCardTagSelect.children = [];
+  ReviewCardTagSelect.size = AllTags.length + 1;
+
   AllTags.forEach((i) {
     var newTagOpt = html.OptionElement();
     newTagOpt.value = i.name;
     newTagOpt.text = i.name;
     AddCardTagSelect.children.add(newTagOpt);
+    ReviewCardTagSelect.children.add(newTagOpt);
   });
 }
