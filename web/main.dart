@@ -26,6 +26,9 @@ late html.ButtonElement CardButton;
 late html.DivElement ReviewCardTagDiv;
 late html.ButtonElement ReviewCardsButton;
 
+late html.ParagraphElement CurrentQuestionP;
+late html.ButtonElement ShowCardAnswerButton;
+
 var AllTags = srs.generateDefaultTags();
 List<srs.Card> AllCards = [];
 
@@ -50,10 +53,16 @@ void main() {
   }
 
   {
-    //Review Cards.
+    //select cards for review.
     ReviewCardTagDiv = html.querySelector("#reviewCardTags") as html.DivElement;
     ReviewCardsButton = html.querySelector("#buttonReviewCards") as html.ButtonElement;
     ReviewCardsButton.onClick.listen(reviewCards);
+  }
+
+  {
+    // show card for review
+    CurrentQuestionP = html.querySelector("#currentQuestion") as html.ParagraphElement;
+    ShowCardAnswerButton = html.querySelector("#buttonShowCardAnswer") as html.ButtonElement;
   }
 
   // we need to call populateTags here so that html page can be populated with tags at startup
@@ -119,10 +128,14 @@ void reviewCards(html.Event e) {
 
 void renderCardsForReview(List<srs.Card> cards) {
   cards.forEach((c) {
-    var p = html.ParagraphElement();
-    p.text = c.question;
-    MainDiv.children.add(p);
+    CurrentQuestionP.text = c.question;
   });
+
+  /////////
+  // CurrentQuestionP =
+  //     html.querySelector("#currentQuestion") as html.ParagraphElement;
+  // ShowCardAnswerButton =
+  //     html.querySelector("#buttonShowCardAnswer") as html.ButtonElement;
 }
 
 void populateTags() {
