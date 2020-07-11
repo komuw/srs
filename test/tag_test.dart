@@ -6,7 +6,7 @@ dart format .; pub run test .
  */
 
 void test_tag() {
-  var c = srs.Tag("all", "tag availed/added to all cards.");
+  var c = srs.Tag("all");
 
   tester.expect(c.createdAt.isUtc, tester.equals(true));
   tester.expect(c.updatedAt.isUtc, tester.equals(true));

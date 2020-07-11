@@ -3,13 +3,12 @@ import "./exceptions.dart" as e;
 
 class Tag {
   final String name;
-  final String description;
 
   // all the datetimes should be in UTC
   late final DateTime createdAt;
   late final DateTime updatedAt;
 
-  Tag(this.name, this.description) {
+  Tag(this.name) {
     if (name.contains(" ")) {
       throw e.SrsException("tag's name should be one word");
     }
@@ -20,10 +19,9 @@ class Tag {
 
   @override
   String toString() {
-    var _nSubst = name.substring(0, math.min(10, name.length));
-    var _dSubst = description.substring(0, math.min(10, description.length));
+    var _nSubst = name.substring(0, math.min(15, name.length));
 
-    return "Tag(N:$_nSubst, D:$_dSubst)";
+    return "Tag(N:$_nSubst)";
   }
 
   @override
@@ -43,10 +41,7 @@ class Tag {
 /// Each card will get a tag added for the year it was created.
 Set<Tag> generateDefaultTags() {
   var thisYear = DateTime.now().toUtc().year;
-  var defaultTags = [
-    Tag("all", "tag availed/added to all cards."),
-    Tag("year$thisYear", "tag for year $thisYear")
-  ];
+  var defaultTags = [Tag("all"), Tag("year$thisYear")];
 
   return Set.from(defaultTags);
 }

@@ -15,7 +15,6 @@ webdev serve \
 late html.DivElement MainDiv;
 
 late html.InputElement TagNameInput;
-late html.InputElement TagDescriptionInput;
 late html.ButtonElement TagButton;
 
 late html.InputElement CardQuestionInput;
@@ -38,7 +37,6 @@ void main() {
   {
     // Create Tags.
     TagNameInput = html.querySelector("#tagName") as html.InputElement;
-    TagDescriptionInput = html.querySelector("#tagDescription") as html.InputElement;
     TagButton = html.querySelector("#buttonAddTags") as html.ButtonElement;
     TagButton.onClick.listen(addTags);
   }
@@ -70,10 +68,9 @@ void main() {
 }
 
 void addTags(html.Event e) {
-  var t = srs.Tag(TagNameInput.value, TagDescriptionInput.value);
+  var t = srs.Tag(TagNameInput.value);
   AllTags.add(t);
   TagNameInput.value = "";
-  TagDescriptionInput.value = "";
 
   populateTags();
   print("""{"event": "addTags", "Tag": $t}""");
@@ -83,7 +80,7 @@ void addCards(html.Event e) {
   List<srs.Tag> _tags = [];
   var _selected_tags = AddCardTagSelect.selectedOptions;
   _selected_tags.forEach((i) {
-    _tags.add(srs.Tag(i.value, "some stuff"));
+    _tags.add(srs.Tag(i.value));
   });
 
   var c = srs.Card(CardQuestionInput.value, CardAnswerText.value, _tags);

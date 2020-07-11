@@ -6,8 +6,7 @@ dart format .; pub run test .
  */
 
 void test_card_creation() {
-  var c = srs.Card(
-      "name?", "My name is Kapombe.", [srs.Tag("cs", "computer science general knowledge")]);
+  var c = srs.Card("name?", "My name is Kapombe.", [srs.Tag("cs")]);
 
   tester.expect(c.createdAt.isUtc, tester.equals(true));
   tester.expect(c.updatedAt.isUtc, tester.equals(true));
@@ -17,21 +16,20 @@ void test_card_creation() {
 
   var c2 = srs.Card("q?", "a", [
     // tags with same name are treated as same Tag
-    srs.Tag("cs", "aa"),
-    srs.Tag("algo", "1141"),
-    srs.Tag("cs", "xyz"),
-    srs.Tag("cs", "3akskq"),
-    srs.Tag("cs", "3akskq"),
-    srs.Tag("cs", "3akskq"),
-    srs.Tag("cs", "3akskq")
+    srs.Tag("cs"),
+    srs.Tag("algo"),
+    srs.Tag("cs"),
+    srs.Tag("cs"),
+    srs.Tag("cs"),
+    srs.Tag("cs"),
+    srs.Tag("cs")
   ]);
   // expected is 4 because by default we Card automatically adds `generateDefaultTags`
   tester.expect(c2.tags.length, tester.equals(4));
 }
 
 void test_card_tags() {
-  var c = srs.Card(
-      "name?", "My name is Kapombe.", [srs.Tag("cs", "computer science general knowledge")]);
+  var c = srs.Card("name?", "My name is Kapombe.", [srs.Tag("cs")]);
 
   List<String> _tags = [];
   var r = c.tags.iterator;
@@ -42,10 +40,8 @@ void test_card_tags() {
 }
 
 void test_card_update() {
-  var c = srs.Card(
-      "Why is it called the dead sea?",
-      "Almost nothing lives in it, because its very salty.",
-      [srs.Tag("geography", "general knowledge about geography.")]);
+  var c = srs.Card("Why is it called the dead sea?",
+      "Almost nothing lives in it, because its very salty.", [srs.Tag("geography")]);
   var now = c.createdAt;
   tester.expect(c.nextReviewDate.difference(now), tester.equals(Duration(days: 1)));
 
