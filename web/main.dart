@@ -134,6 +134,8 @@ void renderCardsForReview(html.Event e) {
   //     html.querySelector("#currentQuestion") as html.ParagraphElement;
   // ShowCardAnswerButton =
   //     html.querySelector("#buttonShowCardAnswer") as html.ButtonElement;
+
+  print("""{"event": "renderCardsForReview" "Cards2Review": $Cards2Review}""");
 }
 
 void populateTags() {
