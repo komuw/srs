@@ -26,7 +26,7 @@ t:
         --no-implicit-dynamic \
         --fatal-warnings . && \
         printf "\n run tests::\n" && \
-        pub run test .
+        pub run test --test-randomize-ordering-seed=random .
 
 serve:
 	@export DART_VM_OPTIONS='--enable-experiment=non-nullable, --no-null-safety' && \
