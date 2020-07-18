@@ -26,6 +26,7 @@ late html.DivElement ReviewCardTagDiv;
 late html.ButtonElement ReviewCardsButton;
 
 late html.ParagraphElement CurrentQuestionP;
+late html.ParagraphElement CurrentAnswerP;
 late html.ButtonElement ShowCardAnswerButton;
 
 var AllTags = srs.generateDefaultTags();
@@ -62,6 +63,7 @@ void main() {
   {
     // show card for review
     CurrentQuestionP = html.querySelector("#currentQuestion") as html.ParagraphElement;
+    CurrentAnswerP = html.querySelector("#currentAnswer") as html.ParagraphElement;
     ShowCardAnswerButton = html.querySelector("#buttonShowCardAnswer") as html.ButtonElement;
     ShowCardAnswerButton.onClick.listen(renderCardsForReview);
   }
@@ -127,6 +129,7 @@ void reviewCards(html.Event e) {
 void renderCardsForReview(html.Event e) {
   Cards2Review.forEach((c) {
     CurrentQuestionP.text = c.question;
+    CurrentAnswerP.text = c.answer;
   });
 
   /////////
