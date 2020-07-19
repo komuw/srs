@@ -46,8 +46,7 @@ void main() {
 
   {
     //Create Cards.
-    CardQuestionInput =
-        html.querySelector("#cardQuestion") as html.InputElement;
+    CardQuestionInput = html.querySelector("#cardQuestion") as html.InputElement;
     AddCardTagSelect = html.querySelector("#addCardTags") as html.SelectElement;
     CardAnswerText = html.querySelector("#cardAnswer") as html.TextAreaElement;
     CardButton = html.querySelector("#buttonAddCards") as html.ButtonElement;
@@ -57,19 +56,15 @@ void main() {
   {
     //select cards for review.
     ReviewCardTagDiv = html.querySelector("#reviewCardTags") as html.DivElement;
-    AddReviewableDeckButton =
-        html.querySelector("#buttonAddReviewableDeck") as html.ButtonElement;
+    AddReviewableDeckButton = html.querySelector("#buttonAddReviewableDeck") as html.ButtonElement;
     AddReviewableDeckButton.onClick.listen(addReviewableDeck);
   }
 
   {
     // show card for review
-    CardToReviewQuestionDiv =
-        html.querySelector("#cardToReviewQuestion") as html.DivElement;
-    CardToReviewAnswerDiv =
-        html.querySelector("#cardToReviewAnswer") as html.DivElement;
-    ShowCardButton =
-        html.querySelector("#buttonShowCard") as html.ButtonElement;
+    CardToReviewQuestionDiv = html.querySelector("#cardToReviewQuestion") as html.DivElement;
+    CardToReviewAnswerDiv = html.querySelector("#cardToReviewAnswer") as html.DivElement;
+    ShowCardButton = html.querySelector("#buttonShowCard") as html.ButtonElement;
     ShowCardButton.onClick.listen(renderCardsForReview);
   }
 
@@ -141,8 +136,7 @@ void renderCardsForReview(html.Event e) {
   } else {
     var x = Cards2Review.removeLast();
     CardToReviewQuestionDiv.text = x.question;
-    CardToReviewAnswerDiv.text =
-        x.answer + " \nREMAININGCARDSTOREVIEW:$remainingCardsToReview";
+    CardToReviewAnswerDiv.text = x.answer + " \nREMAININGCARDSTOREVIEW:$remainingCardsToReview";
   }
 
   print("""{"event": "renderCardsForReview"  }""");
