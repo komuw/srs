@@ -25,8 +25,7 @@ late html.ButtonElement CardButton;
 late html.DivElement ReviewCardTagDiv;
 late html.ButtonElement AddReviewableDeckButton;
 
-late html.DivElement CardToReviewQuestionDiv;
-late html.DivElement CardToReviewAnswerDiv;
+late html.DivElement CardToReviewDiv;
 late html.ButtonElement ShowCardButton;
 
 var AllTags = srs.generateDefaultTags();
@@ -62,8 +61,7 @@ void main() {
 
   {
     // show card for review
-    CardToReviewQuestionDiv = html.querySelector("#cardToReviewQuestion") as html.DivElement;
-    CardToReviewAnswerDiv = html.querySelector("#cardToReviewAnswer") as html.DivElement;
+    CardToReviewDiv = html.querySelector("#cardToReview") as html.DivElement;
     ShowCardButton = html.querySelector("#buttonShowCard") as html.ButtonElement;
     ShowCardButton.onClick.listen(renderCardsForReview);
   }
@@ -132,11 +130,19 @@ void renderCardsForReview(html.Event e) {
 
   if (Cards2Review.length <= 0) {
     remainingCardsToReview = 0;
-    CardToReviewQuestionDiv.text = "You are DONE reviewing the whole Deck.";
+    CardToReviewDiv.text = "You are DONE reviewing the whole Deck.";
   } else {
+    CardToReviewDiv.children = [];
     var x = Cards2Review.removeLast();
-    CardToReviewQuestionDiv.text = x.question;
-    CardToReviewAnswerDiv.text = x.answer + " \nREMAININGCARDSTOREVIEW:$remainingCardsToReview";
+
+    var _question = html.ParagraphElement();
+    var _answer = html.ParagraphElement();
+    var _items = html.ParagraphElement();
+    _question.text = x.question;
+    _answer.text = x.answer;
+    _items.text = "remaining: $remainingCardsToReview";
+
+    CardToReviewDiv.children.addAll([_question, _answer, _items]);
   }
 
   print("""{"event": "renderCardsForReview"  }""");
