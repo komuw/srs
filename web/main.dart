@@ -25,9 +25,9 @@ late html.ButtonElement CardButton;
 late html.DivElement ReviewCardTagDiv;
 late html.ButtonElement AddReviewableDeckButton;
 
-late html.ParagraphElement CurrentQuestionP;
-late html.ParagraphElement CurrentAnswerP;
-late html.ButtonElement ShowCardAnswerButton;
+late html.DivElement CardToReviewQuestionDiv;
+late html.DivElement CardToReviewAnswerDiv;
+late html.ButtonElement ShowCardButton;
 
 var AllTags = srs.generateDefaultTags();
 List<srs.Card> AllCards = [];
@@ -62,10 +62,10 @@ void main() {
 
   {
     // show card for review
-    CurrentQuestionP = html.querySelector("#currentQuestion") as html.ParagraphElement;
-    CurrentAnswerP = html.querySelector("#currentAnswer") as html.ParagraphElement;
-    ShowCardAnswerButton = html.querySelector("#buttonShowCardAnswer") as html.ButtonElement;
-    ShowCardAnswerButton.onClick.listen(renderCardsForReview);
+    CardToReviewQuestionDiv = html.querySelector("#cardToReviewQuestion") as html.DivElement;
+    CardToReviewAnswerDiv = html.querySelector("#cardToReviewAnswer") as html.DivElement;
+    ShowCardButton = html.querySelector("#buttonShowCard") as html.ButtonElement;
+    ShowCardButton.onClick.listen(renderCardsForReview);
   }
 
   // we need to call populateTags here so that html page can be populated with tags at startup
@@ -127,18 +127,12 @@ void addReviewableDeck(html.Event e) {
 }
 
 void renderCardsForReview(html.Event e) {
-  Cards2Review.forEach((c) {
-    CurrentQuestionP.text = c.question;
-    CurrentAnswerP.text = c.answer;
-  });
+  var x = Cards2Review.removeLast();
 
-  /////////
-  // CurrentQuestionP =
-  //     html.querySelector("#currentQuestion") as html.ParagraphElement;
-  // ShowCardAnswerButton =
-  //     html.querySelector("#buttonShowCardAnswer") as html.ButtonElement;
+  CardToReviewQuestionDiv.text = x.question;
+  CardToReviewAnswerDiv.text = x.answer;
 
-  print("""{"event": "renderCardsForReview" "Cards2Review": $Cards2Review}""");
+  print("""{"event": "renderCardsForReview" "card2review": $x}""");
 }
 
 void populateTags() {
