@@ -23,7 +23,7 @@ late html.TextAreaElement CardAnswerText;
 late html.ButtonElement CardButton;
 
 late html.DivElement ReviewCardTagDiv;
-late html.ButtonElement ReviewCardsButton;
+late html.ButtonElement AddReviewableDeckButton;
 
 late html.ParagraphElement CurrentQuestionP;
 late html.ParagraphElement CurrentAnswerP;
@@ -56,8 +56,8 @@ void main() {
   {
     //select cards for review.
     ReviewCardTagDiv = html.querySelector("#reviewCardTags") as html.DivElement;
-    ReviewCardsButton = html.querySelector("#buttonReviewCards") as html.ButtonElement;
-    ReviewCardsButton.onClick.listen(reviewCards);
+    AddReviewableDeckButton = html.querySelector("#buttonAddReviewableDeck") as html.ButtonElement;
+    AddReviewableDeckButton.onClick.listen(addReviewableDeck);
   }
 
   {
@@ -97,7 +97,7 @@ void addCards(html.Event e) {
   print("""{"event": "addCards", "Card": $c}""");
 }
 
-void reviewCards(html.Event e) {
+void addReviewableDeck(html.Event e) {
   List<String> _selectedTags = [];
   ReviewCardTagDiv.children.forEach((el) {
     if (el is html.CheckboxInputElement) {
@@ -123,7 +123,7 @@ void reviewCards(html.Event e) {
   });
 
   populateTags();
-  print("""{"event": "reviewCards" "Cards2Review": $Cards2Review}""");
+  print("""{"event": "addReviewableDeck" "Cards2Review": $Cards2Review}""");
 }
 
 void renderCardsForReview(html.Event e) {
