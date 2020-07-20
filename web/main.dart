@@ -138,9 +138,26 @@ void renderCardsForReview(html.Event e) {
     var _question = html.ParagraphElement();
     var _answer = html.ParagraphElement();
     var _items = html.ParagraphElement();
-    _question.text = x.question;
+    // _question.text = x.question;
     _answer.text = x.answer;
     _items.text = "remaining: $remainingCardsToReview";
+
+    html.PreElement();
+
+    _question.innerHtml = """
+<pre><code class="python"> 
+# ecommerce_tasks.py
+import requests
+
+class BaseTask(abc.ABC):
+    task_name = None
+
+    def __init__(self):
+        self.broker = Broker()
+
+b = BaseTask()
+</code></pre>
+    """;
 
     CardToReviewDiv.children.addAll([_question, _answer, _items]);
   }
@@ -174,4 +191,24 @@ void populateTags() {
     ReviewCardTagDiv.children.add(label);
     ReviewCardTagDiv.children.add(html.BRElement());
   });
+}
+
+void cooler() {
+  var divTag = html.querySelector("#something") as html.DivElement;
+
+  var codeString = """
+# ecommerce_tasks.py
+import requests
+
+class BaseTask(abc.ABC):
+    task_name = None
+
+b = BaseTask()""";
+  var _codeTag = html.Element.tag("code");
+  _codeTag.text = codeString;
+  _codeTag.classes = ["python"];
+
+  var _preTag = html.Element.tag("pre");
+  _preTag.children.add(_codeTag);
+  divTag.children.add(_preTag);
 }
