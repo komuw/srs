@@ -23,11 +23,24 @@
 
     <!-- Get highlightjs by going to https://highlightjs.org/download/, select the languages you want and download. -->
     <!-- You can also use:
-    <script src="https://cdn.rawgit.com/google/code-prettify/master/loader/run_prettify.js"></script> -->
+    <script src="https://cdn.jsdelivr.net/gh/google/code-prettify@master/loader/run_prettify.js"></script> -->
 
-    <link rel="stylesheet" href="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/default.min.css">
-    <script src="//cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/styles/default.min.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/highlight.js/10.0.0/highlight.min.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <script>
+        function reloadHighlighting() {
+            // reload highliting after X seconds
+            setTimeout(
+                function() {
+                    document.querySelectorAll('pre code').forEach((block) => {
+                        hljs.highlightBlock(block);
+                    });
+                    console.log("reloadHighlighting called.");
+                },
+            0300);
+        }
+    </script>
 
     <!-- Dartlang stuff -->
     <script defer src="main.dart.js"></script>
@@ -83,8 +96,8 @@
             <div id="cardToReview">
                 <!-- will be populated  -->
             </div>
-            <button id="buttonShowCard" class="someClass" type="button" name="add reviewable deck">
-                Add Reviewable Deck
+            <button id="buttonShowCard" class="someClass" type="button" name="Show Card" onclick="reloadHighlighting()">
+                Show Card
             </button>
 
 
