@@ -4,6 +4,11 @@ import "dart:math" as math;
 // https://gist.github.com/doctorpangloss/13ab29abd087dc1927475e560f876797
 enum Rating { Hard, Medium, Easy }
 
+// TODO: look at https://www.idorecall.com/
+// They allow you to upload your reading materials(books, pdfs, webpages, videos, youtube etc)
+// and then u can link those into your cards.
+// When reviewing cards, u can click to go to the exact source, at the exact page(or time if it is a youtube video)
+
 num sm2(List<Rating> historyOfRatings) {
   /*
           Returns the number of days to delay the next review of an item by, fractionally, based on the history of answers to
